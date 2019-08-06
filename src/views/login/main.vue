@@ -1,9 +1,9 @@
 <style scoped>
-    @import 'styles/common.css';
+    
 </style>
 <template>
     <div>
-        <router-view></router-view>
+        login page
     </div>
 </template>
 <script>

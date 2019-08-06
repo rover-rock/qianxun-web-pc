@@ -1,9 +1,9 @@
 <style scoped>
-    @import 'styles/common.css';
+    
 </style>
 <template>
     <div>
-        <router-view></router-view>
+        我的常用工具        设置
     </div>
 </template>
 <script>
