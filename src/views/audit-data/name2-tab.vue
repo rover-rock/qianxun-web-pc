@@ -5,40 +5,55 @@
 </style>
 <template>
   <Form ref="form" :label-width="150" :model="keywords">
-    <FormItem label="期间">
-      <div class="row">
-        <DatePicker
-          format="yyyy-MM-dd"
-          type="date"
-          placement="top"
-          placeholder="选择起始时间"
-          style="width: 200px"
-          v-model="keywords.start"
-        ></DatePicker>
-        <span class="split-text">至</span>
-        <DatePicker
-          format="yyyy-MM-dd"
-          type="date"
-          placement="top"
-          placeholder="选择结束时间"
-          style="width: 200px"
-          v-model="keywords.end"
-        ></DatePicker>
-      </div>
+    <Row>
+      <Col span="8">
+      <FormItem label="会计师事务所">
+      <Input type="text" placeholder="匹配关键字" v-model="keywords.audit_agency"></Input>
     </FormItem>
-    <FormItem label="审计意见类型">
+        
+      </Col>
+      <Col span="16">
+        <FormItem label="时间">
+          <div class="row">
+            <DatePicker
+              format="yyyy-MM-dd"
+              type="date"
+              placement="top"
+              placeholder="选择起始时间"
+              style="width: 200px"
+              v-model="keywords.start"
+            ></DatePicker>
+            <span class="split-text">至</span>
+            <DatePicker
+              format="yyyy-MM-dd"
+              type="date"
+              placement="top"
+              placeholder="选择结束时间"
+              style="width: 200px"
+              v-model="keywords.end"
+            ></DatePicker>
+          </div>
+        </FormItem>
+      </Col>
+    </Row>
+    <Row>
+      <Col span="8">
+      <FormItem label="非标意见类型">
       <Select v-model="keywords.audit_result" style="width:200px;">
         <Option v-for="(item,index) in result_types" :value="item" :key="index">{{ item }}</Option>
       </Select>
     </FormItem>
-    <FormItem label="公司">
-      <Input type="text" placeholder="匹配关键字" v-model="keywords.company"></Input>
-    </FormItem>
+      </Col>
+      <Col span="16">
+      <FormItem label="公司">
+          <Input type="text" placeholder="匹配关键字" v-model="keywords.company"></Input>
+        </FormItem>
+      </Col>
+    </Row>
     
-    <FormItem label="会计师事务所">
-      <Input type="text" placeholder="匹配关键字" v-model="keywords.audit_agency"></Input>
-    </FormItem>
-    <FormItem label="签字注师">
+
+    
+    <FormItem label="非标意见正文">
       <Input type="text" placeholder="匹配关键字" v-model="keywords.audit_sign"></Input>
     </FormItem>
     <FormItem>
@@ -48,7 +63,7 @@
 </template>
 <script>
 import { mapActions } from "vuex";
-import util from "@/libs/util"
+import util from "@/libs/util";
 export default {
   data() {
     return {
@@ -79,6 +94,4 @@ export default {
     }
   }
 };
-
-
 </script>

@@ -9,6 +9,8 @@
   <component :is="componentId"></component>
 </template>
 <script>
+
+import name2Result from "./name2-result";
 import name3Result from "./name3-result";
 export default {
   data() {
@@ -27,6 +29,7 @@ export default {
     
   },
   components:{
+    name2Result,
     name3Result
   }
 };

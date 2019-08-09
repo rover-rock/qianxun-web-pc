@@ -31,7 +31,7 @@
 </div>
 </template>
 <script>
-import util,{a} from "@/libs/util";
+import util from "@/libs/util";
 
 export default {
   data() {
@@ -91,7 +91,6 @@ export default {
     },
   },
   mounted() {
-    a()
   },
   beforeDestroy() {},
   methods: {

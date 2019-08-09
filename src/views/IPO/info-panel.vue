@@ -12,7 +12,7 @@
         <Table :columns="columns8" :data="data_lines" size="small" ref="table" stripe></Table>
         <div style="margin: 10px;overflow: hidden">
           <div style="float: right;">
-            <Page :total="source_data_lines.length" :current="1" @on-change="changePage" @on-page-size-change="changePageSize" show-total show-elevator show-sizer></Page>
+            <Page :total="$store.state.IPO.search_result.length" :current="1" @on-change="changePage" @on-page-size-change="changePageSize" show-total show-elevator show-sizer></Page>
           </div>
         </div>
         <br />
@@ -28,7 +28,8 @@
   </div>
 </template>
 <script>
-import { get_IPO_queue_data } from "@/apis/IPO_data";
+import util from "@/libs/util";
+
 export default {
   data() {
     return {
@@ -87,23 +88,19 @@ export default {
           width: 200
         }
       ],
-      data_lines: [],
-      source_data_lines:[],
       page_num:1,
       per_page_count:10
     };
   },
+  computed:{
+    data_lines(){
+      return util.get_page_data(this.$store.state.IPO.search_result,this.page_num,this.per_page_count)
+    },
+  },
   mounted() {
-    this.get_IPO_queue_data();
   },
   beforeDestroy() {},
   methods: {
-    async get_IPO_queue_data() {
-      let data = await get_IPO_queue_data();
-      data = data.data;
-      this.source_data_lines = data;
-      this.changePage(1)
-    },
     exportData(type) {
       if (type === 1) {
         this.$refs.table.exportCsv({
@@ -124,15 +121,10 @@ export default {
     },
     changePage(page_num){
       this.page_num = page_num
-      this.calculatePage()
     },
     changePageSize(per_page_count){
       this.per_page_count = per_page_count
-      this.calculatePage()
-    },
-    calculatePage(){
-      this.data_lines = this.source_data_lines.slice((this.page_num-1)*this.per_page_count,this.page_num*this.per_page_count)
-    }
+    } 
   }
 };
 </script>

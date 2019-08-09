@@ -17,7 +17,7 @@
 <template>
   <Layout>
     <Header class="header">
-      <span class="logo">青藤</span>
+      <span class="logo">青藤数据</span>
       <Menu mode="horizontal" theme="light" active-name="1" class="header-menu">
         <Submenu name="1">
           <template slot="title">
@@ -54,16 +54,19 @@
           <Icon type="ios-construct" />财经资讯
         </MenuItem>
       </Menu>
-      <Menu mode="horizontal" theme="light">
+      <Menu mode="horizontal" theme="light" @on-select="show_user_drawer = !show_user_drawer">
         <MenuItem name="1">
+        <Badge :count="3" :offset="[20,-8]">
           <Icon type="ios-chatbubbles-outline" size="20" />
+        </Badge>
         </MenuItem>
         <MenuItem name="2">
           <Icon type="ios-help-circle" />帮助
         </MenuItem>
-        <MenuItem name="3">
+        <MenuItem name="3" >
           <Icon type="md-person" />用户
         </MenuItem>
+        <user-drawer :show='show_user_drawer'></user-drawer>
       </Menu>
     </Header>
     <Layout>
@@ -89,15 +92,20 @@
   <!-- </div> -->
 </template>
 <script>
+import userDrawer from "./user-drawer-panel"
+
 export default {
   data() {
     return {
-      
+      show_user_drawer:false
     };
   },
   mounted(){
   },
   methods: {
+  },
+  components:{
+    userDrawer
   }
 };
 </script>

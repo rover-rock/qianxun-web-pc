@@ -1,7 +1,7 @@
 <style scoped lang="less">
     .container {
   background: white;
-  margin:20px;
+  margin: 0 20px;
   padding: 20px;
     }
 </style>
@@ -9,7 +9,7 @@
     <div class="container">
           <Tabs value="name1" @on-click="change_tab">
             <TabPane label="关键审计事项查询" name="name1">关键审计事项查询</TabPane>
-            <TabPane label="非标意见具体内容查询" name="name2">
+            <TabPane label="非标意见具体内容查询" name="name2Result">
                 <name2-component></name2-component>
             </TabPane>
             <TabPane label="审计意见类型、会计事务所、审计收费、签字注师查询" name="name3Result">
@@ -37,7 +37,6 @@
         },
         methods: {
             change_tab( name ){
-                console.log(name)
                 this.$store.commit('set_active_component',name)
             }
         },

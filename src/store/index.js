@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 import Case from './case'
 import audit from './audit-data'
 import punish from './punish'
+import IPO from './IPO'
 
 Vue.use(Vuex)
 
@@ -26,7 +27,8 @@ const store = new Vuex.Store({
     modules:{
         Case,
         audit,
-        punish
+        punish,
+        IPO
     }
 })
 

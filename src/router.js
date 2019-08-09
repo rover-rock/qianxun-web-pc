@@ -4,8 +4,8 @@ import IPOPage from "./views/IPO";
 import auditDataPage from "./views/audit-data";
 import punishPage from "./views/punish";
 import casePage from "./views/case";
-import toolsPage from "./views/tools"
-
+import toolsPage from "./views/tools";
+import reportAPage from "./views/report-A"
 const routers = [
     {
         path: '/',
@@ -22,15 +22,15 @@ const routers = [
             {
                 path: 'report/A-stock',
                 components: {
-                    'search-panel':sharedComponents.searchPanel,
-                    'info-panel':sharedComponents.infoPanel,
+                    'search-panel':reportAPage.searchPanel,
+                    'info-panel':reportAPage.infoPanel,
                     'sider':sharedComponents.siderPanel
                 }
             },
             {
-                path: 'IPO/*',
+                path: 'IPO/:cat',
                 components: {
-                    'search-panel':sharedComponents.searchPanel,
+                    'search-panel':IPOPage.searchPanel,
                     'info-panel':IPOPage.infoPanel
                 }
             },
@@ -57,19 +57,33 @@ const routers = [
                     'info-panel': punishPage.infoPanel,
                     'sider': punishPage.siderPanel
                 }
-            },
-            {
-                path: 'tools',
-                components: {
-                    'search-panel':toolsPage.mainPanel,
-                    'sider': toolsPage.siderPanel
-                }
             }
         ]
     },
     {
         path: '/login',
         component:Main
+    },
+    {
+        path: '/tools',
+        component:sharedComponents.layoutComponent,
+        children:[
+            {
+                path: '',
+                components:{
+                    'search-panel':toolsPage.mainPanel,
+                    'sider': toolsPage.siderPanel
+                }
+            },
+            {
+                path: 'package',
+                components:{
+                    'search-panel':toolsPage.packagePanel,
+                    'sider': toolsPage.siderPanel
+                }
+            },
+            
+        ]
     }
 ];
 
