@@ -1,5 +1,3 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
 
 import Case from './case'
 import audit from './audit-data'
@@ -15,7 +13,10 @@ const store = new Vuex.Store({
     mutations:{
         add_to_search_history (state,keywords) {
             state.search_history.push(keywords)
-          }
+        },
+        set_search_history (state,params){
+          state.search_history = params
+        }
     },
     actions: {
       add_to_search_history ({ commit,state },keywords) {

@@ -1,11 +1,11 @@
-import { get_case_search_data } from "@/apis/case_data";
-import Vue from 'vue'
+import { get_case_search_data,get_total } from "@/apis/case_data";
 export default {
+    namespaced:true,
     state:{
         search_result:[],
-        keywords:{}
-    },
-    getters:{
+        keywords:{},
+        total:0,
+        spinShow:false
     },
     mutations:{
         set_search_result(state,result){
@@ -16,11 +16,17 @@ export default {
         },
         clear_search_result(state){
             state.search_result = []
+        },
+        set_total(state,total){
+            state.total = total
+        },
+        set_spin(state,show){
+            state.spinShow = show
         }
     },
     actions:{
-        search({ commit, state }, keywords ){
-            get_case_search_data( keywords ).then(res => {
+        async search({ commit, state }, keywords ){
+            let res = await get_case_search_data( keywords )
                 
                 commit('set_keywords',keywords)
                 let data = res.data
@@ -30,7 +36,11 @@ export default {
                     return item;
                 });
                 commit('set_search_result',data)
-              })
+        },
+        get_total({commit}, keywords){
+            get_total(keywords).then(res => {
+                commit('set_total',res.data[0].total)
+            })
         },
         clear_search_result({commit}){
             commit('clear_search_result')

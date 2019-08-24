@@ -1,13 +1,10 @@
-import Vue from 'vue';
-import iView from 'iview';
-import VueRouter from 'vue-router';
+import VueRouter from 'vue-router'
 import store from './store'
 import Routers from './router';
 import App from './app.vue';
-import 'iview/dist/styles/iview.css';
 
-Vue.use(VueRouter);
-Vue.use(iView);
+Vue.use(iview);
+Vue.use(VueRouter)
 // 路由配置
 const RouterConfig = {
     mode: 'history',
@@ -16,12 +13,12 @@ const RouterConfig = {
 const router = new VueRouter(RouterConfig);
 
 router.beforeEach((to, from, next) => {
-    iView.LoadingBar.start();
+    iview.LoadingBar.start();
     next();
 });
 
 router.afterEach((to, from, next) => {
-    iView.LoadingBar.finish();
+    iview.LoadingBar.finish();
     window.scrollTo(0, 0);
 });
 

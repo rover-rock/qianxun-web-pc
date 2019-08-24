@@ -19,15 +19,7 @@
 <template>
   <div>
     <div class="panel1">
-      <Card :bordered="false">
-        <p slot="title">历史记录</p>
-        <div class="history-block">
-          <Card :padding="3" v-for="(item, index) in search_history" :key="index">
-            {{item}}
-            <Icon @click="deleteTag(index)" type="md-close" />
-          </Card>
-        </div>
-      </Card>
+      <history-block></history-block>
     </div>
     <div class="panel2">
       <Card :bordered="false">
@@ -62,8 +54,8 @@
   </div>
 </template>
 <script>
-import echarts from "echarts";
 import { get_latest_replies } from "@/apis/case_data";
+import historyBlock from '@/views/shared-components/history-block';
 
 export default {
   data() {
@@ -72,21 +64,7 @@ export default {
       hottest_questions: []
     };
   },
-  computed: {
-    search_history() {
-      return this.$store.state.search_history;
-    }
-  },
   methods: {
-    get_search_history() {
-      let data = localStorage.getItem("search_history") || JSON.stringify([]);
-      this.$store.state.search_history = JSON.parse(data);
-    },
-    deleteTag(index) {
-      let data = this.$store.state.search_history;
-      data.splice(index, 1);
-      localStorage.setItem("search_history", JSON.stringify(data));
-    },
     init_chart() {
       var myChart = echarts.init(document.getElementById("chart"));
       myChart.setOption({
@@ -116,8 +94,10 @@ export default {
     get_latest_replies().then(res => {
       this.latest_replies = res.data;
     });
-    this.get_search_history();
     this.init_chart();
+  },
+  components:{
+    historyBlock
   }
 };
 </script>

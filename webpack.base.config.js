@@ -3,9 +3,14 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
+    externals:{
+        vue:'Vue',
+        iview:'iview',
+        vuex:'Vuex',
+        echarts:'echarts'
+    },
     entry: {
         main: './src/main',
-        vendors: './src/vendors'
     },
     output: {
         path: path.join(__dirname, './dist')

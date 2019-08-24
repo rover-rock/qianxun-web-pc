@@ -1,13 +1,4 @@
 <style lang="less" scoped>
-.panel1 {
-  .history-block {
-    display: flex;
-    flex-wrap: wrap;
-    .ivu-card {
-      margin: 3px 10px;
-    }
-  }
-}
 .panel2 {
   margin-top: 20px;
   background: white;
@@ -15,19 +6,17 @@
 #chart{
     height:300px;
 }
+.sider-time{
+          display: flex;
+    justify-content: flex-end;
+    margin-top: 15px;
+      font-weight: bolder;
+}
 </style>
 <template>
   <div>
     <div class="panel1">
-      <Card :bordered="false">
-        <p slot="title">历史记录</p>
-        <div class="history-block">
-          <Card :padding="3" v-for="(item, index) in search_history" :key="index">
-            {{item}}
-            <Icon @click="deleteTag(index)" type="md-close" />
-          </Card>
-        </div>
-      </Card>
+      <history-block></history-block>
     </div>
     <div class="panel2">
       <Card :bordered="false">
@@ -40,19 +29,19 @@
         <p slot="title">最新回复</p>
         <p v-if="latest_replies.length === 0">暂无</p>
         <div v-for="(item, index) in latest_replies" :key="index">
+          
+          <h4>{{ item.title }}</h4>
           <div>
-            <span>回复人：{{item.comment_author}}</span>
+            <Tag color="primary">问题</Tag> ：<a target="_blank" :href="item.url" v-html="item.question_text"></a>
+          </div>
+          
+          <div>
+            <Tag color="success"> {{item.author}}</Tag>：<span v-html="item.comment_text"></span>
+          </div>
+          <div class="sider-time">
             <span>{{item.comment_time}}</span>
           </div>
           <Divider></Divider>
-          <div>
-            <a target="_blank" :href="item.url">问题：{{item.question_text}}</a>
-          </div>
-          <Divider></Divider>
-          <div>
-            <span>答复：</span>
-            {{item.comment_text}}
-          </div>
         </div>
       </Card>
     </div>
@@ -62,7 +51,8 @@
   </div>
 </template>
 <script>
-import echarts from "echarts";
+
+import historyBlock from "@/views/shared-components/history-block";
 import { get_latest_replies } from "@/apis/case_data";
 
 export default {
@@ -72,21 +62,8 @@ export default {
       hottest_questions: []
     };
   },
-  computed: {
-    search_history() {
-      return this.$store.state.search_history;
-    }
-  },
   methods: {
-    get_search_history() {
-      let data = localStorage.getItem("search_history") || JSON.stringify([]);
-      this.$store.state.search_history = JSON.parse(data);
-    },
-    deleteTag(index) {
-      let data = this.$store.state.search_history;
-      data.splice(index, 1);
-      localStorage.setItem("search_history", JSON.stringify(data));
-    },
+    
     init_chart() {
       var myChart = echarts.init(document.getElementById("chart"));
       myChart.setOption({
@@ -116,8 +93,10 @@ export default {
     get_latest_replies().then(res => {
       this.latest_replies = res.data;
     });
-    this.get_search_history();
     this.init_chart();
+  },
+  components:{
+    historyBlock
   }
 };
 </script>

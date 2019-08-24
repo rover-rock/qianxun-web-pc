@@ -22,10 +22,6 @@ module.exports = merge(webpackBaseConfig, {
             filename: '[name].css',
             allChunks: true
         }),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'vendors',
-            filename: 'vendors.js'
-        }),
         new HtmlWebpackPlugin({
             filename: '../index.html',
             template: './src/template/index.ejs',

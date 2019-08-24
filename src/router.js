@@ -1,85 +1,77 @@
-import sharedComponents from './views/shared-components'
-import {Main} from './views/login'
-import IPOPage from "./views/IPO";
-import auditDataPage from "./views/audit-data";
-import punishPage from "./views/punish";
-import casePage from "./views/case";
-import toolsPage from "./views/tools";
-import reportAPage from "./views/report-A"
 const routers = [
     {
         path: '/',
-        component: sharedComponents.layoutComponent,
+        component: () => import('./views/shared-components/layout'),
         children:[
             {
                 path: '',
                 components: {
-                    'search-panel':sharedComponents.searchPanel,
-                    'info-panel':sharedComponents.infoPanel,
-                    'sider':sharedComponents.siderPanel
+                    'search-panel': () => import('./views/shared-components/search-panel') ,
+                    'info-panel': () => import('./views/shared-components/info-panel') ,
+                    'sider': () => import('./views/shared-components/sider') 
                 }
             },
             {
                 path: 'report/A-stock',
                 components: {
-                    'search-panel':reportAPage.searchPanel,
-                    'info-panel':reportAPage.infoPanel,
-                    'sider':sharedComponents.siderPanel
+                    'search-panel': () => import('./views/report-A/search-panel') ,
+                    'info-panel': () => import('./views/report-A/info-panel') ,
+                    'sider': () => import('./views/report-A/sider') 
                 }
             },
             {
                 path: 'IPO/:cat',
                 components: {
-                    'search-panel':IPOPage.searchPanel,
-                    'info-panel':IPOPage.infoPanel
+                    'search-panel': () => import('./views/IPO/search-panel') ,
+                    'info-panel': () => import('./views/IPO/info-panel') 
                 }
             },
             {
                 path: 'audit-data/case',
                 components: {
-                    'search-panel': casePage.searchPanel,
-                    'info-panel': casePage.infoPanel,
-                    'sider': casePage.siderPanel
+                    'search-panel':  () => import('./views/case/search-panel') ,
+                    'info-panel':  () => import('./views/case/result-panel') ,
+                    'sider':  () => import('./views/case/sider') 
                 }
             },
             {
                 path: 'audit-data/data-search',
                 components: {
-                    'search-panel': auditDataPage.searchPanel,
-                    'info-panel':auditDataPage.infoPanel,
-                    'sider':casePage.siderPanel
+                    'search-panel':  () => import('./views/audit-data/search-panel') ,
+                    'info-panel': () => import('./views/audit-data/result-panel') ,
+                    'sider': () => import('./views/case/sider') 
                 }
             },
             {
                 path: 'punish',
                 components: {
-                    'search-panel': punishPage.searchPanel,
-                    'info-panel': punishPage.infoPanel,
-                    'sider': punishPage.siderPanel
+                    'search-panel': () => import('./views/punish/search-panel') ,
+                    'info-panel':  () => import('./views/punish/info-panel') ,
+                    'sider':  () => import('./views/punish/sider-panel') 
                 }
             }
         ]
     },
     {
         path: '/login',
-        component:Main
+        component: () => import('./views/login/main') 
     },
     {
         path: '/tools',
-        component:sharedComponents.layoutComponent,
+        component: () => import('./views/shared-components/layout') ,
         children:[
             {
                 path: '',
                 components:{
-                    'search-panel':toolsPage.mainPanel,
-                    'sider': toolsPage.siderPanel
+                    'search-panel': () => import('./views/tools/main') ,
+                    'sider':  () => import('./views/tools/sider') 
                 }
             },
             {
                 path: 'package',
                 components:{
-                    'search-panel':toolsPage.packagePanel,
-                    'sider': toolsPage.siderPanel
+                    'search-panel': () => import('./views/tools/package') ,
+                    'sider':  () => import('./views/tools/sider') 
                 }
             },
             

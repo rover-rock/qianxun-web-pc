@@ -1,50 +1,42 @@
 <style lang='less' scoped>
 .search-panel {
   background: white;
-  margin: 0 20px;
   padding: 20px;
-}
-.row{
-    display: flex;
-    span{
-        margin:0 10px;
-    }
+  margin: 0 20px;
 }
 </style>
 <template>
   <Card class="search-panel">
-    <Form ref="form" :label-width="80" :model="keywords" >
-        <FormItem label="期间">
-        <div class="row">
-            <DatePicker
-          format="yyyy-MM-dd HH:mm:ss"
-          type="datetime"
-          placement="top"
-          placeholder="选择起始时间"
-          style="width: 200px"
-          v-model="keywords.start"
-        ></DatePicker>
-        <span>至</span>
+    <Form ref="form" :label-width="80" :model="keywords">
+      <Row>
+        <Col span="12">
+          <FormItem prop="question" label="问题">
+            <Tooltip content="多个关键字以空格隔开" placement="top" :transfer="true">
+              <Input style="width:120%" type="text" placeholder="匹配关键字" v-model="keywords.question"></Input>
+            </Tooltip>
+          </FormItem>
+        </Col>
+        <Col span="12">
+          <FormItem prop="comment" label="回复">
+            <Tooltip content="多个关键字以空格隔开" placement="top" :transfer="true">
+              <Input style="width:120%"  type="text" placeholder="匹配关键字" v-model="keywords.comment"></Input>
+            </Tooltip>
+          </FormItem>
+        </Col>
+      </Row>
+      <FormItem label="期间">
         <DatePicker
-          format="yyyy-MM-dd hh:MM:ss"
-          type="datetime"
+          format="yyyy-MM-dd"
+          type="daterange"
           placement="top"
-          placeholder="选择结束时间"
+          placeholder="选择期间"
           style="width: 200px"
-          v-model="keywords.end"
-          
+          :transfer="true"
+          v-model="datespan"
+          :options="options"
         ></DatePicker>
-        </div>
-        
       </FormItem>
-      <FormItem prop="question" label="问题">
-        <Input type="text"  placeholder="匹配关键字" v-model="keywords.question">
-        </Input>
-      </FormItem>
-      <FormItem prop="comment" label="回复">
-        <Input type="text"  placeholder="匹配关键字" v-model="keywords.comment">
-        </Input>
-      </FormItem>  
+
       <FormItem>
         <Button type="primary" @click="handleSubmit('form')">检索</Button>
       </FormItem>
@@ -52,35 +44,48 @@
   </Card>
 </template>
 <script>
-import { mapActions } from 'vuex'
+import { createNamespacedHelpers } from "vuex";
+import util from "@/libs/util";
+import config from "@/config/config";
 
+const { mapActions, mapMutations } = createNamespacedHelpers("Case");
 export default {
   data() {
     return {
       keywords: {
-        start:'2015-07-19 00:00:00',
-        end:'2019-07-18 12:07:00',
-        question:'',
-        comment:''
-      }
+        start: "1990-01-01 00:00:00",
+        end: new Date().toLocaleDateString(),
+        question: "",
+        comment: ""
+      },
+      datespan: ["1990-01-01 00:00:00", new Date().toLocaleDateString()],
+      options: config.options
     };
   },
-  mounted() {},
+
+  watch: {
+    datespan(value) {
+      this.keywords.start = this.datespan[0];
+      this.keywords.end = this.datespan[1];
+    }
+  },
+  mounted() {
+    this.handleSubmit();
+  },
   beforeDestroy() {},
   methods: {
-    ...mapActions([
-      'search',
-      'add_to_search_history'
-      ]),
-    handleSubmit(name) {
-      this.$refs[name].validate(valid => {
-        if (valid) {
-          this.search(this.keywords)
-          this.add_to_search_history(this.keywords)
-        } else {
-          this.$Message.error("Fail!");
-        }
-      });
+    ...mapActions(["search", "get_total"]),
+    ...mapMutations(["set_spin"]),
+    handleSubmit() {
+      let keywords = { ...this.keywords, current_page: 1, page_size: 10 };
+      //匹配数据库中时间格式
+      keywords.start = util.format(keywords.start) + " 00:00:00";
+      keywords.end = util.format(keywords.end) + " 24:59:59";
+
+      this.set_spin(true);
+      this.search(keywords).then(() => this.set_spin(false));
+      this.get_total(keywords);
+      this.$store.dispatch("add_to_search_history", this.keywords);
     }
   }
 };
