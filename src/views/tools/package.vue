@@ -12,15 +12,15 @@
 </style>
 <template>
     <div>
-        <router-link to="/tools">
+        <router-link tag="a" to="/">
             <div class="back-button">
                 <Icon type="md-arrow-back" size="20" /> 返回
             </div>
         </router-link>
         
         <Card class="container">
-        <Input style="width:500px" search enter-button placeholder="输入单号" />
-    </Card>
+            <Input style="width:500px" search enter-button placeholder="输入单号" />
+        </Card>
     </div>
     
 </template>

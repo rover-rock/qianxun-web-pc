@@ -21,7 +21,7 @@
         },
         methods: {
             goto(){
-                this.$router.push('/tools/package')
+                this.$router.push('/audit/tools/package')
             },
             close(){
                 this.show = false;

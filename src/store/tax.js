@@ -1,4 +1,4 @@
-import { get_audit_fees, get_audit_fees_total, get_wenda, get_wenda_total } from "@/apis/audit_data";
+import { get_laws, get_laws_total, get_wenda, get_wenda_total } from "@/apis/tax";
 export default {
     namespaced:true,
     state: {
@@ -8,7 +8,7 @@ export default {
         spinShow:false
     },
     mutations:{
-        set_audit_fees_records(state,data){
+        set_search_result(state,data){
             state.search_results = data
         },
         set_active_component(state,component){
@@ -28,19 +28,24 @@ export default {
         }
     },
     actions:{
-        get_audit_fees_records({commit},keywords){
+        async get_laws({commit},keywords){
             commit('set_keywords',keywords)
-            get_audit_fees(keywords).then(res => {
+            await get_laws(keywords).then(res => {
                 let data = res.data
-                commit('set_audit_fees_records',data)
+                data.map(item => {
+                    Vue.set(item, "collapsed", true);
+                    Vue.set(item, "checked", false);
+                    return item;
+                });
+                commit('set_search_result',data)
             })
         },
-        get_audit_fees_total({commit}, keywords){
-            get_audit_fees_total(keywords).then(res => {
+        get_laws_total({commit}, keywords){
+            get_laws_total(keywords).then(res => {
                 commit('set_total',res.data[0].total)
             })
         },
-        async get_wenda_records({commit},keywords){
+        async get_wenda({commit},keywords){
             commit('set_keywords',keywords)
             await get_wenda(keywords).then(res => {
                 let data = res.data
@@ -49,7 +54,7 @@ export default {
                     Vue.set(item, "checked", false);
                     return item;
                 });
-                commit('set_audit_fees_records',data)
+                commit('set_search_result',data)
             })
         },
         get_wenda_total({commit}, keywords){

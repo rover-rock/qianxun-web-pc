@@ -13,6 +13,11 @@ export function get_latest_replies(){
     return get(Config.API_POINT + '/case/latest-replies')
 }
 
+export const get_last_week_comments = () => {
+    return get(Config.API_POINT + '/case/last-week-comments')
+}
+
+
 export function get_one_case(params){
     return get(Config.API_POINT + '/case/get_one_case',{params:params})
 }

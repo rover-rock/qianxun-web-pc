@@ -55,7 +55,7 @@
 </template>
 <script>
 import { get_latest_replies } from "@/apis/case_data";
-import historyBlock from '@/views/shared-components/history-block';
+import historyBlock from '@/views/components/history-block';
 
 export default {
   data() {

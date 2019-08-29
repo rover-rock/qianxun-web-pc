@@ -1,22 +1,22 @@
 const routers = [
     {
         path: '/',
-        component: () => import('./views/shared-components/layout'),
+        component: () => import('./views/components/layout'),
         children:[
             {
                 path: '',
                 components: {
-                    'search-panel': () => import('./views/shared-components/search-panel') ,
-                    'info-panel': () => import('./views/shared-components/info-panel') ,
-                    'sider': () => import('./views/shared-components/sider') 
+                    'search-panel': () => import('./views/components/search-panel') ,
+                    'info-panel': () => import('./views/components/info-panel') ,
+                    'sider': () => import('./views/components/sider') 
                 }
             },
             {
-                path: 'report/A-stock',
+                path: 'report/Astock',
                 components: {
-                    'search-panel': () => import('./views/report-A/search-panel') ,
-                    'info-panel': () => import('./views/report-A/info-panel') ,
-                    'sider': () => import('./views/report-A/sider') 
+                    'search-panel': () => import('./views/report/search-panel') ,
+                    'info-panel': () => import('./views/report/info-panel') ,
+                    'sider': () => import('./views/report/sider') 
                 }
             },
             {
@@ -27,19 +27,51 @@ const routers = [
                 }
             },
             {
-                path: 'audit-data/case',
+                path: 'audit/case',
                 components: {
-                    'search-panel':  () => import('./views/case/search-panel') ,
-                    'info-panel':  () => import('./views/case/result-panel') ,
-                    'sider':  () => import('./views/case/sider') 
+                    'search-panel':  () => import('./views/audit/case/search-panel') ,
+                    'info-panel':  () => import('./views/audit/case/result-panel') ,
+                    'sider':  () => import('./views/audit/case/sider') 
                 }
             },
             {
-                path: 'audit-data/data-search',
+                path: 'audit/fees',
                 components: {
-                    'search-panel':  () => import('./views/audit-data/search-panel') ,
-                    'info-panel': () => import('./views/audit-data/result-panel') ,
-                    'sider': () => import('./views/case/sider') 
+                    'search-panel':  () => import('./views/audit/fees/search-panel') ,
+                    'info-panel':  () => import('./views/audit/fees/result-panel') ,
+                    'sider':  () => import('./views/audit/case/sider') 
+                }
+            },
+            {
+                path: 'audit/feibiao',
+                components: {
+                    'search-panel':  () => import('./views/audit/feibiao/search-panel') ,
+                    'info-panel': () => import('./views/audit/feibiao/result-panel') ,
+                    'sider':  () => import('./views/audit/case/sider')  
+                }
+            },
+            {
+                path: 'audit/wenda',
+                components: {
+                    'search-panel':  () => import('./views/audit/wenda/search-panel') ,
+                    'info-panel': () => import('./views/audit/wenda/result-panel') ,
+                    'sider':  () => import('./views/audit/case/sider')  
+                }
+            },
+            {
+                path: 'tax/law',
+                components: {
+                    'search-panel':  () => import('./views/tax/law/search-panel') ,
+                    'info-panel': () => import('./views/tax/law/result-panel') ,
+                    'sider':  () => import('./views/audit/case/sider')  
+                }
+            },
+            {
+                path: 'tax/wenda',
+                components: {
+                    'search-panel':  () => import('./views/tax/wenda/search-panel') ,
+                    'info-panel': () => import('./views/tax/wenda/result-panel') ,
+                    'sider':  () => import('./views/audit/case/sider')  
                 }
             },
             {
@@ -57,8 +89,8 @@ const routers = [
         component: () => import('./views/login/main') 
     },
     {
-        path: '/tools',
-        component: () => import('./views/shared-components/layout') ,
+        path: '/audit/tools',
+        component: () => import('./views/components/layout') ,
         children:[
             {
                 path: '',

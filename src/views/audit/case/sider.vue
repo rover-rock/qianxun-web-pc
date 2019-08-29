@@ -52,8 +52,8 @@
 </template>
 <script>
 
-import historyBlock from "@/views/shared-components/history-block";
-import { get_latest_replies } from "@/apis/case_data";
+import historyBlock from "@/views/components/history-block";
+import { get_latest_replies,get_last_week_comments } from "@/apis/case_data";
 
 export default {
   data() {
@@ -64,11 +64,18 @@ export default {
   },
   methods: {
     
-    init_chart() {
+    async init_chart() {
+      let x_data = []
+      for (let i = 1; i <= 7; i++) {
+        let time = new Date(Date.now() - 1000*60*60*24*i)
+        x_data.unshift( time.toLocaleDateString() )
+      }
+      let res = await get_last_week_comments()
+      let data = res.data.map(item => { return item[0].total })
       var myChart = echarts.init(document.getElementById("chart"));
       myChart.setOption({
         title: {
-          text: "统计数据",
+          text: "最近一周回复量",
           left: '100',
           textStyle:{
               fontSize:"14", 
@@ -76,14 +83,17 @@ export default {
         },
         tooltip: {},
         xAxis: {
-          data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
+          data: x_data,
+          axisLabel:{
+            rotate:-45
+          }
         },
         yAxis: {},
         series: [
           {
-            name: "销量",
+            name: "回复数",
             type: "bar",
-            data: [5, 20, 36, 10, 10, 20]
+            data: data
           }
         ]
       });

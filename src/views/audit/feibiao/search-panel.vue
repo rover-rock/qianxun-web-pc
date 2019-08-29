@@ -2,8 +2,14 @@
 .split-text {
   margin: 0 5px;
 }
+.search-panel {
+  background: white;
+  padding: 20px;
+  margin: 0 20px;
+}
 </style>
 <template>
+<Card class="search-panel">
   <Form ref="form" :label-width="150" :model="keywords">
     <Row>
       <Col span="8">
@@ -60,6 +66,7 @@
       <Button type="primary" @click="submit()">检索</Button>
     </FormItem>
   </Form>
+  </Card>
 </template>
 <script>
 import { mapActions } from "vuex";

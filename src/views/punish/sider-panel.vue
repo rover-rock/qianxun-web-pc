@@ -33,7 +33,7 @@
 <script>
 
 
-import historyBlock from '@/views/shared-components/history-block';
+import historyBlock from '@/views/components/history-block';
 console.log(echarts);
 export default {
   data() {

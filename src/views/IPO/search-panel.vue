@@ -4,7 +4,7 @@
     <search-panel @on-submit="handleSubmit"></search-panel>
 </template>
 <script>
-import searchPanel from "@/views/shared-components/search-panel";
+import searchPanel from "@/views/components/search-panel";
 import util from "@/libs/util"
 
     export default {

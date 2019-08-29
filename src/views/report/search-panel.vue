@@ -4,7 +4,7 @@
     <search-panel @on-submit="handleSumbit"></search-panel>
 </template>
 <script>
-import searchPanel from "@/views/shared-components/search-panel";
+import searchPanel from "@/views/components/search-panel";
 
     export default {
         data () {
