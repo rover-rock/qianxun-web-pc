@@ -7,7 +7,7 @@ let config = {
     options:{
         shortcuts: [
             {
-                text: '近一周',
+                text: '近一周', 
                 value () {
                     const end = new Date();
                     const start = new Date();
