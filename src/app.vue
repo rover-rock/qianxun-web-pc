@@ -1,8 +1,8 @@
-<style scoped>
-    @import 'styles/common.css';
+<style lang="less">
+    @import 'styles/common.less';
 </style>
 <template>
-    <div>
+    <div style="width:100%;height:100%;">
         <router-view></router-view>
     </div>
 </template>

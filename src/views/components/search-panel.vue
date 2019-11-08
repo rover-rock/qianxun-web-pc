@@ -1,9 +1,5 @@
 <style scoped>
-.search-panel {
-  background: white;
-  margin: 0 20px;
-  padding: 20px;
-}
+
 </style>
 <template>
   <div class="search-panel">

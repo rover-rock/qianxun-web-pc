@@ -2,11 +2,7 @@
 .split-text {
   margin: 0 5px;
 }
-.search-panel {
-  background: white;
-  padding: 20px;
-  margin: 0 20px;
-}
+
 </style>
 <template>
 <Card class="search-panel">

@@ -19,6 +19,7 @@
       <div style="margin: 10px;overflow: hidden">
         <div style="float: right;">
           <Page
+            class="pager"
             :total="total"
             :current="current_page"
             @on-change="changePage"

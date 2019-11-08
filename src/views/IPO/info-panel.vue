@@ -12,7 +12,7 @@
         <Table :columns="columns8" :data="data_lines" size="small" ref="table" stripe></Table>
         <div style="margin: 10px;overflow: hidden">
           <div style="float: right;">
-            <Page :total="$store.state.IPO.search_result.length" :current="1" @on-change="changePage" @on-page-size-change="changePageSize" show-total show-elevator show-sizer></Page>
+            <Page class="pager" :total="$store.state.IPO.search_result.length" :current="1" @on-change="changePage" @on-page-size-change="changePageSize" show-total show-elevator show-sizer></Page>
           </div>
         </div>
         <br />

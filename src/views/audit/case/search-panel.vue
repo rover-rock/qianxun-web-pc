@@ -1,14 +1,10 @@
 <style lang='less' scoped>
-.search-panel {
-  background: white;
-  padding: 20px;
-  margin: 0 20px;
-}
+
 </style>
 <template>
   <Card class="search-panel">
     <Form ref="form" :label-width="80" :model="keywords">
-      <Row>
+      <Row> 
         <Col span="12">
           <FormItem prop="question" label="问题">
             <Tooltip content="多个关键字以空格隔开" placement="top" :transfer="true">

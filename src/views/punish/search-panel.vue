@@ -1,9 +1,4 @@
 <style lang='less' scoped>
-.search-panel {
-  background: white;
-  margin: 0 20px;
-  padding: 0 20px;
-}
 </style>
 <template>
   <Card class="search-panel">

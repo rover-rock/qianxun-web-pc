@@ -11,6 +11,7 @@
       <div style="margin: 10px;overflow: hidden">
         <div style="float: right;">
           <Page
+            class="pager"
             :total="$store.state.audit.search_results.length"
             :current="1"
             @on-change="changePage"

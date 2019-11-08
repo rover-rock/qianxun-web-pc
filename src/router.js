@@ -2,9 +2,22 @@ const routers = [
     {
         path: '/',
         component: () => import('./views/components/layout'),
+        meta:{
+            access:['admin']
+        },
         children:[
             {
-                path: '',
+                path:'',
+                name:'_home',
+                redirect:'/home'
+            },
+            {
+                path: 'home',
+                name: 'home',
+                meta: {
+                    access:['admin'],
+                    title:'首页'
+                },
                 components: {
                     'search-panel': () => import('./views/components/search-panel') ,
                     'info-panel': () => import('./views/components/info-panel') ,
@@ -12,10 +25,11 @@ const routers = [
                 }
             },
             {
-                path: 'report/Astock',
+                path: 'report/:type',
+                name: 'Astock',
                 components: {
                     'search-panel': () => import('./views/report/search-panel') ,
-                    'info-panel': () => import('./views/report/info-panel') ,
+                    'info-panel': () => import('./views/report/result-panel') ,
                     'sider': () => import('./views/report/sider') 
                 }
             },
@@ -86,7 +100,16 @@ const routers = [
     },
     {
         path: '/login',
+        name: 'login',
         component: () => import('./views/login/main') 
+    },
+    {
+        path: '/401',
+        name: 'error_401',
+        meta: {
+          hideInMenu: true
+        },
+        component: () => import('./views/error-page/401.vue')
     },
     {
         path: '/audit/tools',
@@ -108,6 +131,10 @@ const routers = [
             },
             
         ]
+    },
+    {
+        path:'/one-report/:id',
+        component: () => import('./views/report/one-report.vue')
     }
 ];
 

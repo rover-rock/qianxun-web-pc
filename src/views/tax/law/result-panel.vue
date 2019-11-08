@@ -13,10 +13,7 @@
     font-size: 1.3em;
   }
 }
-.list-container {
-  font-size: 1.2em;
-  position: relative;
-}
+
 .list-item {
   display: flex;
   justify-content: space-between;

@@ -13,11 +13,14 @@
     font-size: 1.3em;
   }
 }
-
 .list-item {
   display: flex;
   justify-content: space-between;
   .part1 {
+    display: flex;
+    align-items: center;
+  }
+  .part2 {
     display: flex;
     align-items: center;
   }
@@ -30,6 +33,19 @@
   }
   .date {
     color: gray;
+    margin-left: 5px;
+  }
+  .link_btn {
+    margin-left: 5px;
+  }
+  .download_btn {
+    line-height: 15px;
+    margin-left: 5px;
+    height: 15px;
+  }
+  .download_btn img {
+    width: 15px;
+    height: 15px;
   }
 }
 
@@ -48,7 +64,7 @@
   padding: 0px 30px;
   overflow: hidden;
 }
-.detail-item{
+.detail-item {
   font-size: 1.1em;
 }
 .detail-content {
@@ -58,7 +74,7 @@
   margin-bottom: 25px;
   margin-top: 10px;
 }
-.detail-time{
+.detail-time {
   font-weight: bolder;
 }
 </style>
@@ -84,59 +100,27 @@
         <div class="list-item">
           <div class="part1" @click="unfold(item)">
             <Checkbox size="large" v-model="item.checked"></Checkbox>
-            <Tag color="volcano">{{item.author}}</Tag>
-            <div v-html="item.title" class="title text-ellipsis"></div>
+            <Tag color="volcano">{{item.code}}</Tag>
+            <div v-html="item.secname + ':' + item.title" class="title text-ellipsis"></div>
           </div>
-          <div>
-            <Tooltip content="点击查看详情" placement="top">
-              <Button shape="circle" @click=" showOneCase(item.title,item.link) ">共{{item.count}}条回复</Button>
-            </Tooltip>
-            <span class="date">{{item.comment_time}}</span>
-            <a :href="item.link" target="_blank">源</a>
-            <span>阅读量</span>
-            <Button>收藏</Button>
+          <div class="part2">
+            <a :href="'/one-report/'+item.announcement_id" target="_blank">详情</a>
+            <span class="date">{{item.time}}</span>
+            <a class="link_btn" :href="item.link" target="_blank">源</a>
+            <a class="download_btn" :href="item.download_link">
+              <img src="../../images/download.png" alt="下载" />
+            </a>
           </div>
         </div>
         <div class="collapse-panel" :class="{'collapsed':item.collapsed}">
-          <Tag color="magenta">{{item.question_author}}</Tag>:
-          <span @click="unfold(item)" v-html="item.question_text"></span>
-          <br />
-          <br />
-          <span class="author">回复：</span>
-          <span v-html="item.comment_text"></span>
+          <Tag color="magenta">【预览】&emsp;证券代码：{{item.code}}</Tag>
+          <span @click="unfold(item)" v-html="item.list"></span>
         </div>
       </Card>
       <Spin size="large" fix v-if="spinShow"></Spin>
-      <Modal v-model="modalShow"  :scrollable="true" width="800">
-        <div slot="header" style="color:#f60;display:flex;justify-content:space-between;align-items:center;">
-          <h3>案例详情</h3>
-          <Button shape="circle" icon='ios-heart'  style="margin-right:100px">
-            喜欢
-          </Button>
-          
-        </div>
-        <div>
-          <h3 class="detail-title" v-html="result[0] && result[0].title"></h3>
-        <Timeline>
-          <TimelineItem class="detail-item" v-for="(item, index) in result" :key="index" color="green">
-            <p class="detail-time">{{item.comment_time}}</p>
-            <div v-if="!isBlank(item.question_text)">
-              <Tag color="success">{{item.question_author}}</Tag>提问：
-              <span v-html="item.question_text" class="detail-content"></span>
-            </div>
-            <div>
-              <Tag color="error">{{item.author}}</Tag>回复：
-              <span v-html="item.comment_text" class="detail-content"></span>
-              
-            </div>
-            <Divider v-if="index !== result.length-1"></Divider>
-          </TimelineItem>
-        </Timeline>
-        </div>
-        
-      </Modal>
     </div>
-    <Page class="pager"
+    <Page
+      class="pager"
       :total="total"
       :current="current_page"
       @on-change="onPageChange"
@@ -150,9 +134,10 @@
 <script>
 import { createNamespacedHelpers } from "vuex";
 import util from "@/libs/util";
-import { get_one_case } from "@/apis/case_data";
 
-const { mapActions, mapMutations, mapState } = createNamespacedHelpers("Case");
+const { mapActions, mapMutations, mapState } = createNamespacedHelpers(
+  "report"
+);
 export default {
   data() {
     return {
@@ -164,28 +149,36 @@ export default {
       sort: "latest",
       result: []
     };
-  }, 
+  },
   computed: {
     ...mapState({
-      spinShow: state => state.spinShow,
       total: state => state.total,
-      search_result:state => state.search_result
-    }), 
+      search_result: state => state.search_result,
+      keywords: state => state.keywords,
+      spinShow: state => state.spinShow
+    }),
     formated_total() {
       return util.format_number(this.total);
     },
     results() {
       let data = this.search_result;
-      let keywords = this.$store.state.Case.keywords;
+      let keywords = this.keywords;
       data.forEach(item => {
-        item.comment_text = util.render_multi_keywords_red(
-          keywords.comment,
-          item.comment_text
+        item.title = util.render_multi_keywords_red(keywords.title, item.title);
+        item.list_title = item.list_title && util.render_multi_keywords_red(
+          keywords.chapter,
+          item.list_title
         );
-        item.question_text = util.render_multi_keywords_red(
-          keywords.question,
-          item.question_text
+        item.list_content = item.list_content && this.render_multi_keywords_red(
+          keywords.content,
+          item.list_content
         );
+        item.list =
+          "<br>" +
+          (item.list_title || item.title) +
+          "<br>&emsp;&emsp;" +
+          ((item.list_content && item.list_content.replace(/@@@/g, "<br>")) ||
+            "");
       });
       return data;
     }
@@ -194,31 +187,34 @@ export default {
     this.clear_search_result();
   },
   methods: {
-    ...mapActions(["clear_search_result", "search"]),
-    ...mapMutations(["set_spin"]),
-    isBlank(str){
-      return str === "" || /^[\s↵]+$/.test(str)
-    },
-    showOneCase(title, link) {
-      get_one_case({ title: title, link: link }).then(result => {
-        this.result = result.data;
-        let keywords = this.$store.state.Case.keywords;
-        this.result.forEach(item => {
-        item.title = util.render_multi_keywords_red(
-          keywords.question,
-          item.title
-        );
-        item.comment_text = util.render_multi_keywords_red(
-          keywords.comment,
-          item.comment_text
-        );
-        item.question_text = util.render_multi_keywords_red(
-          keywords.question,
-          item.question_text
-        );
-      });
-        this.modalShow = true;
-      });
+    ...mapActions(["search"]),
+    ...mapMutations(["clear_search_result", "set_spin"]),
+    render_multi_keywords_red(keywords, text) {
+      const get_list_content_start = (keywords, text) => {
+        if (!keywords) return 0;
+        let keys = keywords.split(/\s/);
+        let seg1 = text.slice(0, text.indexOf(keys[0]));
+        let res = seg1.lastIndexOf("@@@");
+        let count = 0;
+        while (res > 0 && count < 3) {
+          seg1 = seg1.slice(0, res);
+          res = seg1.lastIndexOf("@@@");
+          count++;
+        }
+        return (res = res < 0 ? 0 : res);
+      };
+      const get_fixed_lines_content = text => {
+        return text
+          .split("@@@")
+          .slice(0, 8)
+          .join("@@@");
+      };
+      let start = get_list_content_start(keywords, text);
+
+      return util.render_multi_keywords_red(
+        keywords,
+        get_fixed_lines_content(text.slice(start))
+      );
     },
     checkall() {
       this.check_all = !this.check_all;
@@ -236,12 +232,6 @@ export default {
       item.collapsed = !item.collapsed;
     },
     orderByTime(type) {
-      //computed属性只能根据它所依赖的数据变化而变化，sort，push这些数组操作无效。
-      // this.$store.state.Case.search_result.sort((a, b) => {
-      //   let res = a.comment_time > b.comment_time;
-      //   if (type === "earlest") return res ? 1 : -1;
-      //   else return res ? -1 : 1;
-      // });
       this.sort = type;
       this.current_page = 1;
       this.search_with_params();
@@ -258,7 +248,7 @@ export default {
     search_with_params() {
       this.set_spin(true);
       this.search({
-        ...this.$store.state.Case.keywords,
+        ...this.keywords,
         current_page: this.current_page,
         page_size: this.page_size,
         sort: this.sort
