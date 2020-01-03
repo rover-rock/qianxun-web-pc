@@ -1,10 +1,10 @@
-import { get_reports, get_reports_total } from "@/apis/report";
+import { get_reports } from "@/apis/report";
 export default {
     namespaced:true,
     state:{
         search_result:[],
         keywords:{},
-        total:0,
+        total:0, 
         spinShow:false
     },
     mutations:{
@@ -27,20 +27,15 @@ export default {
     actions:{
         async search({ commit, state }, keywords ){
             let res = await get_reports( keywords )
-                
                 commit('set_keywords',keywords)
                 let data = res.data
-                data.map(item => {
+                let hits = data.data.map(item => {
                     Vue.set(item, "collapsed", true);
                     Vue.set(item, "checked", false);
                     return item;
                 });
-                commit('set_search_result',data)
-        },
-        get_total({commit}, keywords){
-            get_reports_total(keywords).then(res => {
-                commit('set_total',res.data[0].total)
-            })
+                commit('set_search_result',hits)
+                commit('set_total',data.total)
         },
         clear_search_result({commit}){
             commit('clear_search_result')

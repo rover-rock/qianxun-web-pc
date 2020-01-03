@@ -249,6 +249,7 @@ export default {
       this.set_spin(true);
       this.search({
         ...this.keywords,
+        type:this.$route.params.type,
         current_page: this.current_page,
         page_size: this.page_size,
         sort: this.sort

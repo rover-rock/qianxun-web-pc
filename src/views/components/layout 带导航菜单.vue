@@ -193,6 +193,64 @@
             </div>
           </Menu>
         </div>
+        <!-- 缓存导航 -->
+        <div class="navCase">
+          <!-- <tags-nav :value="navList" @input="handleClick" :list="navList" @on-close="handleCloseTag"/> -->
+          <!-- <tags-nav :list="navCase" v-if="navCase && navCase.length" /> -->
+          <div class="tags-nav">
+            <!-- 关闭 -->
+            <div class="close-con">
+              <Dropdown transfer @on-click="handleTagsOption" style="margin-top:7px;">
+                <Button size="small" type="text">
+                  <Icon :size="18" type="ios-close-circle-outline" />
+                </Button>
+                <DropdownMenu slot="list">
+                  <DropdownItem name="close-all">关闭所有</DropdownItem>
+                  <DropdownItem name="close-others">关闭其他</DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </div>
+            <ul
+              v-show="visible"
+              :style="{left: contextMenuLeft + 'px', top: contextMenuTop + 'px'}"
+              class="contextmenu"
+            >
+              <li v-for="(item, key) of menuList" :key="key">{{item}}</li>
+            </ul>
+            <!-- 向坐滑动 -->
+            <div class="btn-con left-btn">
+              <Button type="text" @click="handleScroll(240)">
+                <Icon :size="18" type="ios-arrow-back" />
+              </Button>
+            </div>
+            <!-- 向右滑动 -->
+            <div class="btn-con right-btn">
+              <Button type="text" @click="handleScroll(-240)">
+                <Icon :size="18" type="ios-arrow-forward" />
+              </Button>
+            </div>
+            <!-- 内容 -->
+            <div class="scroll-outer" ref="scrollOuter">
+              <div ref="scrollBody" class="scroll-body" :style="{left: tagBodyLeft + 'px'}">
+                <transition-group name="taglist-moving-animation">
+                  <Tag
+                    type="dot"
+                    v-for="(item, key) in navCase"
+                    ref="tagsPageOpened"
+                    :key="item.name"
+                    :name="item.name"
+                    :data-route-item="item"
+                    :closable="key != 0"
+                    :color="item.name==navThis ? 'primary' : 'default'"
+                    @on-close="handleClose(key)"
+                    @click.native="handleClick(item)"
+                  >{{item.title}}</Tag>
+                </transition-group>
+              </div>
+            </div>
+          </div>
+          <div class="clear"></div>
+        </div>
       
         <Modal v-model="show_modal"  width="600" :mask-closable = 'false'	>
             <div slot="header"> 

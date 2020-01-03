@@ -1,59 +1,7 @@
 import Cookies from 'js-cookie';
 
-export const hasChild = (item) => {
-  return item.children && item.children.length !== 0
-}
-
-export const hasOneOf = ( targetarr, arr ) => {
-  return arr.some(_ => targetarr.indexOf(_) > -1)
-}
-
-const showThisMenuEle = (item, access) => {
-  if (item.meta && item.meta.access && item.meta.access.length) {
-    if (hasOneOf( access, item.meta.access)) return true
-    else return false
-  } else return true
-}
-
-/**
- * @param {Array} list 通过路由列表得到菜单列表
- * @returns {Array}
- */
-export const getMenuByRouter = (list, access) => {
-  let res = []
-  list.forEach(item => {
-    
-  })
-  return res
-}
-
-export const showTitle = () => {
-  return "";
-}
-
-export const findNodeUpperByClasses = (ele, classes) => {
-  let parentNode = ele.parentNode
-  if (parentNode) {
-    let classList = parentNode.classList
-    if (classList && classes.every(className => classList.contains(className))) {
-      return parentNode
-    } else {
-      return findNodeUpperByClasses(parentNode, classes)
-    }
-  }
-}
-
-/**
- * @param {Array} arr1
- * @param {Array} arr2
- * @description 得到两个数组的并集, 两个数组的元素为数值或字符串
- */
-export const getUnion = (arr1, arr2) => {
-  return Array.from(new Set([...arr1, ...arr2]))
-}
-
 export const setToken = (token) => {
-  Cookies.set('token', token, { expires: 1 })
+  Cookies.set('token', token, { expires: 7 })
 }
 
 export const getToken = () => {
@@ -62,35 +10,35 @@ export const getToken = () => {
   else return false
 }
 
-/**
- * 权鉴
- * @param {*} name 即将跳转的路由name
- * @param {*} access 用户权限数组
- * @param {*} routes 路由列表
- * @description 用户是否可跳转到该页
- */
-export const canTurnTo = (name, access, routes) => {
-  const routePermissionJudge = (list) => {
-    return list.some(item => {
-      if (item.children && item.children.length) {
-        return routePermissionJudge(item.children)
-      } else if (item.name === name) {
-        return hasAccess(access, item)
-      }
-    })
-  }
+// /**
+//  * 权鉴
+//  * @param {*} name 即将跳转的路由name
+//  * @param {*} access 用户权限数组
+//  * @param {*} routes 路由列表
+//  * @description 用户是否可跳转到该页
+//  */
+// export const canTurnTo = (name, access, routes) => {
+//   const routePermissionJudge = (list) => {
+//     return list.some(item => {
+//       if (item.children && item.children.length) {
+//         return routePermissionJudge(item.children)
+//       } else if (item.name === name) {
+//         return hasAccess(access, item)
+//       }
+//     })
+//   }
 
-  return routePermissionJudge(routes)
-}
+//   return routePermissionJudge(routes)
+// }
 
-/**
- * @param {*} access 用户权限数组，如 ['super_admin', 'admin']
- * @param {*} route 路由列表
- */
-const hasAccess = (access, route) => {
-  if (route.meta && route.meta.access) return hasOneOf(access, route.meta.access)
-  else return true
-}
+// /**
+//  * @param {*} access 用户权限数组，如 ['super_admin', 'admin']
+//  * @param {*} route 路由列表
+//  */
+// const hasAccess = (access, route) => {
+//   if (route.meta && route.meta.access) return hasOneOf(access, route.meta.access)
+//   else return true
+// }
 
 export default {
   get_page_data(data, current_page, page_size) {

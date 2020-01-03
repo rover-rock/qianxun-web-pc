@@ -1,7 +1,7 @@
 <template>
   <Form ref="loginForm" :model="form" :rules="rules" @keydown.enter.native="handleSubmit">
-    <FormItem prop="userName">
-      <Input v-model="form.userName" placeholder="请输入用户名">
+    <FormItem prop="phone">
+      <Input v-model="form.phone" placeholder="请输入手机号">
         <span slot="prepend">
           <Icon :size="16" type="ios-person"></Icon>
         </span>
@@ -23,11 +23,11 @@
 export default {
   name: 'LoginForm',
   props: {
-    userNameRules: {
+    phoneRules: {
       type: Array,
       default: () => {
         return [
-          { required: true, message: '账号不能为空', trigger: 'blur' }
+          { required: true, message: '手机号不能为空', trigger: 'blur' }
         ]
       }
     },
@@ -43,7 +43,7 @@ export default {
   data () {
     return {
       form: {
-        userName: 'hao',
+        phone:  localStorage.getItem('user_phone')  || '',
         password: ''
       }
     }
@@ -51,7 +51,7 @@ export default {
   computed: {
     rules () {
       return {
-        userName: this.userNameRules,
+        phone: this.phoneRules,
         password: this.passwordRules
       }
     }
@@ -60,8 +60,9 @@ export default {
     handleSubmit () {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
+          localStorage.setItem('user_phone',this.form.phone)
           this.$emit('on-success-valid', {
-            userName: this.form.userName,
+            phone: this.form.phone,
             password: this.form.password
           })
         }

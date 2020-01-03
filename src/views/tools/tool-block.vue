@@ -2,6 +2,7 @@
   .line1 {
     display: flex;
     align-items: center;
+    cursor: pointer;
     span {
       color: #4caf50;
       font-weight: bold;
@@ -23,7 +24,7 @@
 <template>
   
     <Card>
-      <router-link :to="to">
+      <router-link :to="to" @click.native="goto">
         <div class="line1">
           <Icon :type="type" size="30" />
           <span>{{name}}</span>
@@ -34,6 +35,7 @@
         <span>{{like_num}}</span>
       </div>
     </Card>
+    
 </template>
 <script>
 
@@ -49,6 +51,10 @@ export default {
   ],
   mounted() {},
   beforeDestroy() {},
-  methods: {}
+  methods: {
+    goto(){
+      this.$router.push(this.to)
+    }
+  }
 };
 </script>

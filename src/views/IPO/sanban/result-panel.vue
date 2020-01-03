@@ -37,100 +37,77 @@
       <Button type="primary" size="large" @click="exportData(2)">
         <Icon type="ios-download-outline"></Icon>导出排序后的数据
       </Button>
-      <Modal
-        v-model="modalShow"
-        title="符合条件的签字注师"
-        width="800px">
-        <table class="modal-table">
-          <tr>
-            <th>姓名</th>
-            <th>性别</th>
-            <th>职位</th>
-            <th>专业</th>
-            <th>学校</th>
-            <th>事务所</th>
-            <th>注册时间</th>
-            <th>注册文号</th>
-          </tr>
-          <tr v-for="(item, index) in cpa_list" :key="index">
-            <td><a target="_blank" :href="item.url">{{item.name}}</a></td>
-            <td>{{item.gender}}</td>
-            <td>{{item.duty}}</td>
-            <td>{{item.profession}}</td>
-            <td>{{item.school}}</td>
-            <td>{{item.certi_agency}}</td>
-            <td>{{item.certi_time}}</td>
-            <td>{{item.certi_doc}}</td>
-          </tr>
-        </table>
-    </Modal>
 </div>
 </template>
 <script>
 import util from "@/libs/util";
 import { search_cpa } from "@/apis/audit_data"
 import { createNamespacedHelpers } from "vuex";
-
-const { mapActions, mapMutations, mapState } = createNamespacedHelpers("audit");
+import { pager_mixin } from "@/mixins"
+const { mapActions, mapMutations, mapState } = createNamespacedHelpers("IPO");
 export default {
+  mixins:[ pager_mixin ],
   data() {
     return {
       columns: [
         {
-          title: "公司代码",
-          key: "ts_code",
+          title: "企业名称",
+          key: "name",
           width: 130,
           fixed: "left",
           sortable: true
         },
         {
-          title: "开始时间",
-          key: "ann_date",
+          title: "保荐机构",
+          key: "recommend",
           width: 200,
           sortable: true
         },
         {
-          title: "结束时间",
-          key: "end_date",
-          width: 200,
+          title: "上市板块",
+          key: "market",
+          width: 140,
           sortable: true
         },
         {
           title: "会计师事务所",
-          key: "audit_agency",
-          width: 200,
+          key: "auditor",
+          width: 130,
           sortable: true
         },
         {
-          title: "审计意见",
-          key: "audit_result",
-          width: 200,
+          title: "律师事务所",
+          key: "lawer",
+          width: 130,
           sortable: true
         },
         {
-          title: "审计费用",
-          key: "audit_fees",
-          width: 200,
+          title: "受理日期",
+          key: "date",
+          width: 140,
           sortable: true
         },
         {
-          title: "签字注师",
-          key: "audit_sign",
+          title: "审核状态",
+          key: "status",
+          width: 140,
+          sortable: true
+        },
+        {
+          title: "是否已参加抽查抽签或现场检查",
+          key: "is_check",
+          width: 100,
+          sortable: true
+        },
+        {
+          title: "备注",
+          key: "notes",
           width: 200,
-          render: (h, params) => {
-                      let cpas = params.row.audit_sign && params.row.audit_sign.split(',')
-                       cpas = cpas && cpas.map(cpa => {
-                          return h('a',{ props:{ href:'#'}, on: { click:()=>{ this.cpa=cpa;this.showModal(); }}}, cpa)
-                      })
-                      return h('div', cpas);
-                  }
         }
       ], 
       page_size: 10,
       current_page: 1,
-      modalShow:false,
-      cpa:'',
-      cpa_list:[]
+      modalShow:false
     };
   },
   computed:{
@@ -140,11 +117,8 @@ export default {
       keywords:state => state.keywords
     })
   },
-  mounted() {
-  },
-  beforeDestroy() {},
   methods: {
-    ...mapActions(['get_audit_fees_records']),
+    ...mapActions(['get_sanban']),
     exportData(type) {
       if (type === 1) {
         this.$refs.table.exportCsv({
@@ -163,27 +137,12 @@ export default {
         });
       }
     },
-    changePage(page_num) {
-      this.current_page = page_num;
-      this.search_with_params();
-    },
-    changePageSize(per_page_count) {
-      this.page_size = per_page_count;
-      this.current_page = 1;
-      this.search_with_params();
-    },
     search_with_params() {
-      this.get_audit_fees_records({
+      this.get_sanban({
         ...this.keywords,
         current_page: this.current_page,
         page_size: this.page_size
       }).then(() => {})
-    },
-    showModal(){
-      search_cpa({cpa:this.cpa}).then( res => {
-        this.cpa_list = res.data        
-        this.modalShow = true
-      }) 
     }
   }
 };

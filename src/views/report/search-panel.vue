@@ -1,7 +1,7 @@
 <style lang='less' scoped>
 </style>
 <template>
-  <Card class="search-panel">
+  <div class="search-panel">
     <Form ref="form" :label-width="80" :model="keywords">
       <Row>
         <Col span="12">
@@ -61,7 +61,7 @@
         <Button type="primary" @click="handleSubmit('form')">检索</Button>
       </FormItem>
     </Form>
-  </Card>
+  </div>
 </template>
 <script>
 import { createNamespacedHelpers } from "vuex";
@@ -91,6 +91,9 @@ export default {
     datespan(value) {
       this.keywords.start = this.datespan[0];
       this.keywords.end = this.datespan[1];
+    },
+    "$route.params.type"(){
+      this.handleSubmit()
     }
   },
   mounted() {
@@ -98,7 +101,7 @@ export default {
   },
   beforeDestroy() {},
   methods: {
-    ...mapActions(["search", "get_total"]),
+    ...mapActions(["search"]),
     ...mapMutations(["set_spin"]),
     handleSubmit() {
       
@@ -106,14 +109,13 @@ export default {
       let start = util.format(this.keywords.start),
           end = util.format(this.keywords.end),
           company = (this.keywords.company && this.keywords.company.split(' ')[1]) || '';
-      let keywords = { ...this.keywords, current_page: 1, page_size: 10, sort:'latest',start,end,company };
+      let keywords = { ...this.keywords, type:this.$route.params.type, current_page: 1, page_size: 10, sort:'latest',start,end,company };
       this.set_spin(true);
       this.search(keywords).then(() => this.set_spin(false));
-      this.get_total(keywords);
       this.$store.dispatch("add_to_search_history", this.keywords);
     },
     handleSearchCompany(value){
-      search_company(value).then(res => {
+      search_company(value,this.$route.params.type).then(res => {
         this.matched_company = res.data.map( item =>{
           return `[${item.ts_code}] ${item.name}`
         })

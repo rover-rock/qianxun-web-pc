@@ -57,7 +57,7 @@ export default {
     return {
       keywords: {
         start: "2015-07-19",
-        end: "2019-07-18",
+        end: "",
         agency: "",
         title: "",
         content: ""

@@ -6,26 +6,17 @@ import punish from './punish'
 import IPO from './IPO'
 import report from './report'
 
-import { login, get_user_info } from '@/apis/user'
+import { login, get_user_info, register } from '@/apis/user'
 import { getToken, setToken } from '../libs/util';
 
-import routers from '../router'
-import { getMenuByRouter } from '@/libs/util'
-
 Vue.use(Vuex)
-
+ 
 const store = new Vuex.Store({
     state: {
       search_history:[],
-      user:{
-        access:[]
-      },
+      user:{},
       token:getToken(),
-      hasGetUserInfo:false,
-      breadCrumbList: []
-    },
-    getters: {
-      menuList: (state) => getMenuByRouter(routers, state.user.access),
+      hasGetUserInfo:!!getToken()
     },
     mutations:{
         add_to_search_history (state,keywords) {
@@ -43,9 +34,6 @@ const store = new Vuex.Store({
         set_token(state,token){
           state.token = token
           setToken(token)
-        },
-        setBreadCrumb (state, route) {
-          state.breadCrumbList = getBreadCrumbList(route, state.homeRoute)
         }
     },
     actions: {
@@ -54,6 +42,7 @@ const store = new Vuex.Store({
        keywords.comment !== '' && commit('add_to_search_history',keywords.comment)
        localStorage.setItem('search_history',JSON.stringify(state.search_history))
       },
+
       async handle_login({ commit }, keywords ){
         let res = await login( keywords )
         res = res.data
@@ -65,6 +54,19 @@ const store = new Vuex.Store({
         console.log(res)
         return res        
       },
+
+      async handle_register({commit}, keywords){
+        let res  = await register( keywords )
+        res = res.data
+        if(res.success){
+          commit('set_user',res.data)
+          commit('set_token',res.token)
+          commit('set_hasGetUserInfo',true)
+        }
+        console.log(res)
+        return res
+      },
+
       async get_user_info({ commit, state }){
         let res = await get_user_info(state.token)
         res = res.data
