@@ -9,16 +9,9 @@
     <Row>
       <Col span="12">
         <FormItem label="期间">
-          <DatePicker
-            format="yyyy-MM-dd"
-            type="daterange"
-            placement="top"
-            placeholder="选择期间"
-            style="width: 200px"
-            :transfer="true"
+          <CustomDatePicker 
             v-model="datespan"
-            :options="options"
-          ></DatePicker>
+          ></CustomDatePicker>
         </FormItem>
       </Col>
       
@@ -31,26 +24,16 @@
     <Row>
       <Col span="12">
         <FormItem label="公司">
-          <AutoComplete
-          transfer
-          clearable
+          <CompanyAutoComplete
         v-model="keywords.company"
-        :data="matched_company"
-        @on-search="handleSearchCompany"
-        placeholder="匹配关键字"
-        style="width:300px"></AutoComplete>
+        ></CompanyAutoComplete>
         </FormItem>
       </Col>
       <Col span="12">
         <FormItem label="会计师事务所">
-          <AutoComplete
-          transfer
-          clearable
+          <AgencyAutoComplete     
         v-model="keywords.agency"
-        :data="matched_agency"
-        @on-search="handleSearchAgency"
-        placeholder="匹配关键字"
-        style="width:300px"></AutoComplete>
+        ></AgencyAutoComplete>
         </FormItem>
       </Col>
     </Row>
@@ -75,9 +58,11 @@
 import { createNamespacedHelpers } from "vuex";
 import util from "@/libs/util";
 import config from "@/config/config";
-import { search_company,search_agency } from "@/apis/auto_complete"
-
+import CompanyAutoComplete from '@/views/components/company-auto-complete';
+import AgencyAutoComplete from '@/views/components/agency-auto-complete';
+import CustomDatePicker from '@/views/components/custom-date-picker';
 const { mapActions } = createNamespacedHelpers('audit')
+
 export default {
   data() {
     return {
@@ -96,9 +81,7 @@ export default {
         "无法表示意见"
       ],
       datespan: ["2000-01-01 00:00:00", new Date().toLocaleDateString()],
-      options: config.options,
-      matched_company: [],
-      matched_agency: []
+      options: config.options
     };
   },
   watch: {
@@ -110,9 +93,8 @@ export default {
   mounted() {
     this.submit()
   },
-  beforeDestroy() {},
   methods: {
-    ...mapActions(["get_audit_fees_records","get_audit_fees_total"]),
+    ...mapActions(["get_audit_fees_records"]),
     submit() {   
       let start = util.format(this.keywords.start),
           end = util.format(this.keywords.end),
@@ -122,22 +104,12 @@ export default {
       if( agency && agency !== '' ) agency = agency.split('（')[0];
       let keywords = { ...this.keywords ,start, end, company, agency, current_page: 1, page_size: 10  }
       this.get_audit_fees_records( keywords );
-      this.get_audit_fees_total( keywords )
-    },
-    handleSearchCompany(value){
-      search_company(value).then(res => {
-        this.matched_company = res.data.map( item =>{
-          return `[${item.ts_code}] ${item.name}`
-        })
-      })
-    },
-    handleSearchAgency(value){
-      search_agency(value).then(res => {
-        this.matched_agency = res.data.map( item => {
-          return `[${item.agency_code}] ${item.agency_name}`
-        })
-      })
     }
+  },
+  components:{
+    CompanyAutoComplete,
+    AgencyAutoComplete,
+    CustomDatePicker
   }
 };
 </script>

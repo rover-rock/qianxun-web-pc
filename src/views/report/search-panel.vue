@@ -6,29 +6,15 @@
       <Row>
         <Col span="12">
           <FormItem label="公司">
-            <AutoComplete
-              transfer
-              clearable
-              v-model="keywords.company"
-              :data="matched_company"
-              @on-search="handleSearchCompany"
-              placeholder="匹配关键字"
-              style="width:300px"
-            ></AutoComplete>
+            <CompanyAutoComplete 
+            v-model="keywords.company"
+            :type = "$route.params.type"
+            ></CompanyAutoComplete>
           </FormItem>
         </Col>
         <Col span="12">
           <FormItem label="期间">
-            <DatePicker
-              format="yyyy-MM-dd"
-              type="daterange"
-              placement="top"
-              placeholder="选择期间"
-              style="width: 200px"
-              :transfer="true"
-              v-model="datespan"
-              :options="options"
-            ></DatePicker>
+            <CustomDatePicker v-model="datespan" />
           </FormItem>
         </Col>
       </Row>
@@ -66,9 +52,8 @@
 <script>
 import { createNamespacedHelpers } from "vuex";
 import util from "@/libs/util";
-import config from "@/config/config";
-import { search_company } from "@/apis/auto_complete"
-
+import CompanyAutoComplete from '@/views/components/company-auto-complete'
+import CustomDatePicker from '@/views/components/custom-date-picker'
 const { mapActions, mapMutations } = createNamespacedHelpers("report");
 export default {
   data() {
@@ -81,12 +66,9 @@ export default {
         content: "",
         company: ""
       },
-      datespan: ["1990-01-01", new Date().toLocaleDateString()],
-      options: config.options,
-      matched_company: [],
+      datespan: ["1990-01-01", new Date().toLocaleDateString()]
     };
   },
-
   watch: {
     datespan(value) {
       this.keywords.start = this.datespan[0];
@@ -99,7 +81,6 @@ export default {
   mounted() {
     this.handleSubmit();
   },
-  beforeDestroy() {},
   methods: {
     ...mapActions(["search"]),
     ...mapMutations(["set_spin"]),
@@ -113,14 +94,8 @@ export default {
       this.set_spin(true);
       this.search(keywords).then(() => this.set_spin(false));
       this.$store.dispatch("add_to_search_history", this.keywords);
-    },
-    handleSearchCompany(value){
-      search_company(value,this.$route.params.type).then(res => {
-        this.matched_company = res.data.map( item =>{
-          return `[${item.ts_code}] ${item.name}`
-        })
-      })
-    },
-  }
+    }
+  },
+  components:{CompanyAutoComplete,CustomDatePicker}
 };
 </script>

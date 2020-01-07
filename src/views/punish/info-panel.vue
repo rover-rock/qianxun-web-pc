@@ -190,7 +190,7 @@ export default {
         item.content = util.render_multi_keywords_red(
           keywords.content,
           item.content
-        );
+        ); 
         item.title = util.render_keywords_red(
           keywords.title,
           item.title

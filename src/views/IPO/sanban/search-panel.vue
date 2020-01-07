@@ -4,9 +4,14 @@
 }
 </style>
 <template>
-<Card class="search-panel">
+<div class="search-panel">
   <Form ref="form" :label-width="150" :model="keywords">
     <Row>
+      <Col span="12">
+        <FormItem label="关键词">
+          <Input clearable type="text" placeholder="查询事务所，律所，公司，保荐人及备注等信息" v-model="keywords.keyword"></Input>
+        </FormItem>
+      </Col>
       <Col span="12">
         <FormItem label="期间">
           <DatePicker
@@ -22,33 +27,13 @@
         </FormItem>
       </Col>
       
-      <Col span="12">
-        <FormItem label="关键词">
-          <Input clearable type="text" placeholder="查询事务所，律所，公司，保荐人及备注等信息" v-model="keywords.keyword"></Input>
-        </FormItem>
-      </Col>
-    </Row>
-    <Row>
-      <Col span="12">
-        <FormItem label="审核状态">
-          <Select v-model="keywords.status" :transfer="true" style="width:300px;">
-            <Option v-for="(item,index) in status_types" :value="item" :key="index">{{ item }}</Option>
-          </Select>
-        </FormItem>
-      </Col>
-      <Col span="12">
-       <FormItem label="上市板块">
-          <Select v-model="keywords.market" :transfer="true" style="width:300px;">
-            <Option v-for="(item,index) in market_types" :value="item" :key="index">{{ item }}</Option>
-          </Select>
-        </FormItem>
-      </Col>
+      
     </Row>
     <FormItem>
       <Button type="primary" @click="submit()">检索</Button>
     </FormItem>
   </Form>
-  </Card>
+  </div>
 </template>
 <script>
 import { createNamespacedHelpers } from "vuex";
@@ -62,8 +47,6 @@ export default {
       keywords: {
         start: new Date("2000-01-01").toLocaleDateString(),
         end: new Date().toLocaleDateString(),
-        status:'',
-        market:'',
         keyword:''
       },
       market_types: [

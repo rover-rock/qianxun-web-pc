@@ -20,3 +20,7 @@ export const get_wenda = (params) => {
 export const get_wenda_total = (params) => {
     return get(Config.API_POINT + '/audit-data/wenda-total',{params:params})
 }
+
+export const get_data = (url,params) => {
+    return get(Config.API_POINT + url,{params:params})
+}

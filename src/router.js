@@ -45,6 +45,55 @@ const routers = [
                 }
             },
             {
+                path: 'IPO/zrz_queueing',
+                components: {
+                    'search-panel': () => import('./views/IPO/zrz_queueing/search-panel'),
+                    'info-panel': () => import('./views/IPO/zrz_queueing/result-panel')
+                }
+            },
+            {
+                path: 'IPO/acquisition',
+                components: {
+                    'search-panel': () => import('./views/IPO/acquisition/search-panel'),
+                    'info-panel': () => import('./views/IPO/acquisition/result-panel')
+                }
+            },
+            {
+                path: 'IPO/acquisition',
+                components: {
+                    'search-panel': () => import('./views/IPO/acquisition/search-panel'),
+                    'info-panel': () => import('./views/IPO/acquisition/result-panel')
+                }
+            },
+            {
+                path: 'IPO/acquisition',
+                components: {
+                    'search-panel': () => import('./views/IPO/acquisition/search-panel'),
+                    'info-panel': () => import('./views/IPO/acquisition/result-panel')
+                }
+            },
+            {
+                path: 'IPO/acquisition',
+                components: {
+                    'search-panel': () => import('./views/IPO/acquisition/search-panel'),
+                    'info-panel': () => import('./views/IPO/acquisition/result-panel')
+                }
+            },
+            {
+                path: 'IPO/acquisition',
+                components: {
+                    'search-panel': () => import('./views/IPO/acquisition/search-panel'),
+                    'info-panel': () => import('./views/IPO/acquisition/result-panel')
+                }
+            },
+            {
+                path: 'IPO/acquisition',
+                components: {
+                    'search-panel': () => import('./views/IPO/acquisition/search-panel'),
+                    'info-panel': () => import('./views/IPO/acquisition/result-panel')
+                }
+            },
+            {
                 path: 'audit/case',
                 components: {
                     'search-panel': () => import('./views/audit/case/search-panel'),
@@ -74,6 +123,13 @@ const routers = [
                     'search-panel': () => import('./views/audit/wenda/search-panel'),
                     'info-panel': () => import('./views/audit/wenda/result-panel'),
                     'sider': () => import('./views/audit/case/sider')
+                }
+            },
+            {
+                path: 'audit/keyaudit',
+                components: {
+                    'search-panel': () => import('./views/audit/keyaudit/search-panel'),
+                    'info-panel': () => import('./views/audit/keyaudit/result-panel'),
                 }
             },
             {

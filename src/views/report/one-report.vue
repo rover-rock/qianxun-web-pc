@@ -60,7 +60,7 @@
       }
   }
   .right-panel {
-    width: 900px;
+    width: 800px;
     height: 85%;
     background: white;
     .search-bar {
@@ -205,8 +205,10 @@ export default {
                        const script_node =  this.contentDocument.getElementsByTagName('script')
                        if( script_node[0] )
                        this.contentDocument.head.removeChild( this.contentDocument.getElementsByTagName('script')[0])
-                       let pages = this.contentDocument.querySelectorAll('body>div')
-                       pages.forEach(page => page.style.borderBottom = "1px solid gray")
+                       //title中有匹配到关键字的话，会导致所有的匹配不正确。因为有错误的结构，影响了整体排序。
+                       this.contentDocument.head.removeChild( this.contentDocument.getElementsByTagName('title')[0])
+                      //  let pages = this.contentDocument.querySelectorAll('body>div')
+                      //  pages.forEach(page => page.style.borderBottom = "1px solid gray")
                        that.src_html = this.contentDocument.getElementsByTagName('html')[0].outerHTML;
                        that.html = that.src_html   
                        that.spinShow = false 
@@ -296,6 +298,7 @@ export default {
         acc+= seg
        if(index !== (segments.length -1) )  {
          acc +=  `<span id='cc${index}' style='color:red'>${keywords}</span>`
+         console.log(acc)
          this.temp_matches.push(`#cc${index}`)
          }
         return acc

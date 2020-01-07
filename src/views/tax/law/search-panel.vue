@@ -1,7 +1,7 @@
 <style lang='less' scoped>
 </style>
 <template>
-  <Card class="search-panel">
+  <div class="search-panel">
     <Form ref="form" :label-width="80" :model="keywords">
       <Row>
         <Col span="12">
@@ -58,7 +58,7 @@
         <Button type="primary" @click="handleSubmit('form')">检索</Button>
       </FormItem>
     </Form>
-  </Card>
+  </div>
 </template>
 <script>
 import { createNamespacedHelpers } from "vuex";

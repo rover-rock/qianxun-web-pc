@@ -1,9 +1,5 @@
 <style scoped lang="less">
-.result-panel {
-  background: white;
-  margin: 20px;
-  padding: 20px;
-}
+
 .header {
   font-size: 1em;
   display: flex;

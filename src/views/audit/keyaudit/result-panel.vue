@@ -8,41 +8,6 @@
     font-size: 1.3em;
   }
 }
-
-.list-item {
-  display: flex;
-  justify-content: space-between;
-  .part1 {
-    display: flex;
-    align-items: center;
-  }
-  .title {
-    padding: 5px 10px;
-    max-width: 400px;
-  }
-  .title:hover {
-    font-weight: bolder;
-  }
-  .date {
-    color: gray;
-  }
-}
-
-.collapse-panel {
-  padding: 15px 30px;
-  transition: height 1s, padding 0.3s;
-  .author {
-    background: gray;
-    color: white;
-    padding: 3px 7px;
-    border-radius: 5px;
-  }
-}
-.collapsed {
-  height: 0;
-  padding: 0px 30px;
-  overflow: hidden;
-}
 .detail-item{
   font-size: 1.1em;
 }
@@ -81,32 +46,12 @@
     </div>
     <Divider></Divider>
     <div class="list-container">
-      <Card v-for="(item, index) in results" :key="index">
-        <div class="list-item">
-          <div class="part1" @click="unfold(item)">
-            <Checkbox size="large" v-model="item.checked"></Checkbox>
-            <Tag color="volcano">{{item.agency}}</Tag>
-            <div v-html="item.title" class="title text-ellipsis"></div>
-          </div>
-          <div>
-            <Tooltip content="点击查看详情" placement="top">
-              <Button shape="circle" @click="showOne(item)">查看详情</Button>
-            </Tooltip>
-            <span class="date">{{item.date}}</span>
-            <a :href="item.link" target="_blank">源</a>
-            <span>阅读量</span>
-            <Button>收藏</Button>
-          </div>
-        </div>
-        <div class="collapse-panel" :class="{'collapsed':item.collapsed}">
-          <Tag color="magenta">{{item.category}}</Tag>:
-          <span @click="unfold(item)" v-html="item.html"></span>
-        </div>
-      </Card>
+      <CollapseListItem v-for="(item, index) in results" :item="item" :key="index" @show_detail="showOne">
+      </CollapseListItem>
       <Spin size="large" fix v-if="spinShow"></Spin>
       <Modal v-model="modalShow"  :scrollable="true" width="800">
         <div slot="header" style="color:#f60;display:flex;justify-content:space-between;align-items:center;">
-          <h3>法规详情</h3>
+          <h3>关键审计事项详情</h3>
           <Button shape="circle" icon='ios-heart'  style="margin-right:100px">
             喜欢
           </Button>
@@ -116,27 +61,39 @@
           <div>
             <Row>
               <Col span="12">
-              <Tag color="success">税&emsp;种</Tag>{{result.category}}
+              <Tag color="success">分&emsp;类</Tag>{{result.category}}
               </Col>
               <Col span="12">
-              <Tag color="success">文&emsp;&emsp;号</Tag>{{result.doc}}
+              <Tag color="success">行&emsp;&emsp;&emsp;业</Tag>{{result.thsindustry}}
               </Col>
             </Row>
             <Row>
               <Col span="12">
-              <Tag color="success">banner</Tag>{{result.banner}}
+              <Tag color="success">年&emsp;度</Tag>{{result.annul}}
               </Col>
               <Col span="12">
-              <Tag color="success">发文机关</Tag>{{result.agency}}
+              <Tag color="success">审计事务所</Tag>{{result.agency}}
+              </Col>
+            </Row>
+            <Row>
+              <Col span="12">
+              <Tag color="success">地&emsp;区</Tag>{{result.province}} {{result.city}} {{result.country}}
+              </Col>
+              <Col span="12">
+              <Tag color="success">版&emsp;&emsp;&emsp;块</Tag>{{result.plate}}
               </Col>
             </Row>
         </div>
         <div class="modal-main">
            <p class="detail-title" v-html="result.title"></p>
-           <p class="detail-subtitle">
-             时间：{{result.date}}
-           </p>
-           <p class="detail-content" v-html="result.html"></p>
+           <Steps :current="2" direction="vertical">
+        <Step title="描述" icon="logo-tux" :content="result.info">
+        </Step>
+        <Step title="应对" :content="result.reply">
+        </Step>
+    </Steps>
+           
+           
         </div>      
         </div>
         
@@ -157,8 +114,8 @@
 <script>
 import { createNamespacedHelpers } from "vuex";
 import util from "@/libs/util";
-
-const { mapActions, mapMutations, mapState } = createNamespacedHelpers("tax");
+import CollapseListItem from "@/views/components/collapse-list-item"
+const { mapActions, mapMutations, mapState } = createNamespacedHelpers("audit");
 export default {
   data() {
     return {
@@ -201,7 +158,7 @@ export default {
     this.clear_search_result();
   },
   methods: {
-    ...mapActions(["clear_search_result", "get_laws"]),
+    ...mapActions(["clear_search_result", "get_keyaudit"]),
     ...mapMutations(["set_spin"]),
     isBlank(str){
       return str === "" || /^[\s↵]+$/.test(str)
@@ -222,9 +179,7 @@ export default {
         item.collapsed = this.fold_all;
       });
     },
-    unfold(item) {
-      item.collapsed = !item.collapsed;
-    },
+    
     orderByTime(type) {
       this.sort = type;
       this.current_page = 1;
@@ -241,13 +196,16 @@ export default {
     },
     search_with_params() {
       this.set_spin(true);
-      this.get_laws({
-        ...this.$store.state.tax.keywords,
+      this.get_keyaudit({
+        ...this.keywords,
         current_page: this.current_page,
         page_size: this.page_size,
         sort: this.sort
       }).then(() => this.set_spin(false));
     }
+  },
+  components:{
+    CollapseListItem
   }
 };
 </script>

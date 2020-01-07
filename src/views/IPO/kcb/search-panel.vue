@@ -4,9 +4,14 @@
 }
 </style>
 <template>
-<Card class="search-panel">
+<div class="search-panel">
   <Form ref="form" :label-width="150" :model="keywords">
     <Row>
+      <Col span="12">
+        <FormItem label="关键词">
+          <Input clearable type="text" placeholder="查询" v-model="keywords.keyword"></Input>
+        </FormItem>
+      </Col>
       <Col span="12">
         <FormItem label="期间">
           <DatePicker
@@ -21,26 +26,23 @@
           ></DatePicker>
         </FormItem>
       </Col>
-      
-      <Col span="12">
-        <FormItem label="关键词">
-          <Input clearable type="text" placeholder="查询事务所，律所，公司，保荐人及备注等信息" v-model="keywords.keyword"></Input>
-        </FormItem>
-      </Col>
     </Row>
     <Row>
       <Col span="12">
-        <FormItem label="审核状态">
-          <Select v-model="keywords.status" :transfer="true" style="width:300px;">
-            <Option v-for="(item,index) in status_types" :value="item" :key="index">{{ item }}</Option>
-          </Select>
+        <FormItem label="签字注师">
+          <Input clearable type="text" placeholder="匹配关键字" v-model="keywords.cpa"></Input>
         </FormItem>
       </Col>
       <Col span="12">
-       <FormItem label="上市板块">
-          <Select v-model="keywords.market" :transfer="true" style="width:300px;">
-            <Option v-for="(item,index) in market_types" :value="item" :key="index">{{ item }}</Option>
-          </Select>
+      <FormItem label="会计师事务所">
+          <AutoComplete
+          transfer
+          clearable
+        v-model="keywords.agency"
+        :data="matched_agency"
+        @on-search="handleSearchAgency"
+        placeholder="匹配关键字"
+        style="width:300px"></AutoComplete>
         </FormItem>
       </Col>
     </Row>
@@ -48,12 +50,13 @@
       <Button type="primary" @click="submit()">检索</Button>
     </FormItem>
   </Form>
-  </Card>
+  </div>
 </template>
 <script>
 import { createNamespacedHelpers } from "vuex";
 import util from "@/libs/util";
 import config from "@/config/config";
+import { search_agency } from "@/apis/auto_complete"
 
 const { mapActions } = createNamespacedHelpers('IPO')
 export default {
@@ -62,24 +65,11 @@ export default {
       keywords: {
         start: new Date("2000-01-01").toLocaleDateString(),
         end: new Date().toLocaleDateString(),
-        status:'',
-        market:'',
         keyword:''
       },
-      market_types: [
-        "主板",
-        "中小板",
-        "创业板"
-      ],
-      status_types: [
-        '已通过发审会',
-        '预先披露更新',
-        '已反馈',
-        '已上发审会，暂缓表决',
-        '已受理'
-      ],
       datespan: ["2000-01-01 00:00:00", new Date().toLocaleDateString()],
-      options: config.options
+      options: config.options,
+      matched_agency: []
     };
   },
   watch: {
@@ -92,15 +82,23 @@ export default {
     this.submit()
   },
   methods: {
-    ...mapActions(["get_sanban"]),
-    submit() {         
+    ...mapActions(["get_kcb"]),
+    submit() {   
+      console.log(111)      
       let keywords = this.compose_keywords()
-      this.get_sanban( keywords )
+      this.get_kcb( keywords )
     },
     compose_keywords(){
       let start = util.format(this.keywords.start),
           end = util.format(this.keywords.end)
-      return { ...this.keywords , start, end, current_page: 1, page_size: 10  }
+      return { ...this.keywords , keyword:this.keyword, start, end, current_page: 1, page_size: 10  }
+    },
+    handleSearchAgency(value){
+      search_agency(value).then(res => {
+        this.matched_agency = res.data.map( item => {
+          return `[${item.agency_code}] ${item.agency_name}`
+        })
+      })
     }
   }
 };

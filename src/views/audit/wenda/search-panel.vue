@@ -89,7 +89,7 @@ export default {
   },
   beforeDestroy() {},
   methods: {
-    ...mapActions(["get_wenda_records", "get_wenda_total"]),
+    ...mapActions(["get_wenda_records"]),
     ...mapMutations(["set_spin"]),
     handleSubmit() {
       
@@ -100,7 +100,6 @@ export default {
       let keywords = { ...this.keywords, current_page: 1, page_size: 10, sort:'latest',start,end,company };
       this.set_spin(true);
       this.get_wenda_records(keywords).then(() => this.set_spin(false));
-      this.get_wenda_total(keywords);
       this.$store.dispatch("add_to_search_history", this.keywords);
     },
     handleSearchCompany(value){

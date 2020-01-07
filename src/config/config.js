@@ -2,7 +2,6 @@
 let config = {
     env: "production",
     API_POINT: 'http://106.52.130.31:3000', //部署
-    // API_POINT: 'http://localhost:3000', //开发
     options:{
         shortcuts: [
             {
@@ -102,12 +101,12 @@ let config = {
             },
             {
               name: "2-2",
-              to: "/IPO/kechuangban",
+              to: "/IPO/kcb",
               title: "科创板排队"
             },
             {
               name: "2-3",
-              to: "/IPO/acquisition_queueing",
+              to: "/IPO/acquisition",
               title: "并购重组排队"
             },
             {
@@ -119,7 +118,33 @@ let config = {
               name: "2-5",
               to: "/IPO/failure_case",
               title: "IPO被否案例"
+            },
+            {
+              name: "2-6",
+              to: "/IPO/yupilu",
+              title: "A股、科创板预披露"
+            },
+            {
+              name: "2-7",
+              to: "/IPO/yupilu",
+              title: "科创板问询"
+            },
+            {
+              name: "2-8",
+              to: "/IPO/yupilu",
+              title: "反馈意见（首次公开发行意见、并购重组、再融资）"
+            },
+            {
+              name: "2-9",
+              to: "/IPO/yupilu",
+              title: "发审会公告（A股、并购重组、科创板）"
+            },
+            {
+              name: "2-10",
+              to: "/IPO/yupilu",
+              title: "辅导信息"
             }
+
           ]
         },
         {
@@ -128,28 +153,23 @@ let config = {
           children: [
             {
               name: "7-1",
-              to: "",
-              title: "关键审计事项查询"
+              to: "/audit/keyaudit",
+              title: "关键审计事项"
             },
             {
               name: "7-2",
               to: "/audit/feibiao",
-              title: "非标意见具体内容查询"
+              title: "非标意见"
             },
             {
               name: "7-3",
               to: "/audit/fees",
-              title: "审计收费查询"
-            },
-            {
-              name: "7-5",
-              to: "/audit/case",
-              title: "券商研报关键词查询"
+              title: "审计收费"
             },
             {
               name: "7-6",
               to: "/audit/wenda",
-              title: "投资者关注问题查询"
+              title: "投资者关注问题"
             },
             {
               name: "7-9",
@@ -157,19 +177,39 @@ let config = {
               title: "行政处罚"
             },
             {
-              name: "7-7",
-              to: "/audit/case",
-              title: "关联方核查功能"
-            },
-            {
               name: "7-8",
               to: "/audit/case",
-              title: "研发资本化比例查询"
+              title: "研发资本化"
+            },
+            {
+              name: "7-4",
+              to: "/audit/case",
+              title: "股权质押"
             },
             {
               name: "7-10",
               to: "/audit/case",
-              title: "公司负面信息检索"
+              title: "股份回购"
+            },
+            {
+              name: "7-11",
+              to: "/audit/case",
+              title: "限制性股票"
+            },
+            {
+              name: "7-12",
+              to: "/audit/case",
+              title: "业绩预告"
+            },
+            {
+              name: "7-13",
+              to: "/audit/case",
+              title: "业绩快报"
+            },
+            {
+              name: "7-14",
+              to: "/audit/case",
+              title: "财务报表披露日期"
             }
           ]
         },
@@ -180,87 +220,30 @@ let config = {
         },
         {
           name: "10",
-          title: "准则及案例",
+          title: "案例",
           children: [
+            {
+              name: "3-1",
+              to: "/audit/case",
+              title: "视野案例"
+            },
             {
               name: "3-2",
-              to: "",
-              title: "联动指标剖析"
-            },
-            {
-              name: "3-4",
-              to: "/audit/case",
-              title: "会计审计处理及案例查询"
-            }
-          ]
-        },
-        {
-          name: "8",
-          title: "财务分析",
-          children: [
-            {
-              name: "8-2",
-              to: "",
-              title: "会计审计准则及应用指南查询"
-            },
-            {
-              name: "8-3",
-              to: "",
-              title: "会计审计处理及案例查询"
-            },
-            {
-              name: "8-4",
-              to: "",
-              title: "核心财务数据分析"
-            },
-            {
-              name: "8-5",
-              to: "",
-              title: "财务失真识别"
-            },
-            {
-              name: "8-6",
-              to: "",
-              title: "财务危机预警"
-            }
-          ]
-        },
-        {
-          name: "11",
-          title: "IT咨询",
-          children: [
-            {
-              name: "11-1",
-              to: "/tax/law",
-              title: "案例"
-            },
-            {
-              name: "11-2",
               to: "/tax/wenda",
-              title: "服务范围"
+              title: "税务案例"
             }
           ]
         },
         {
           name: "9",
-          title: "税后法规及案例",
+          title: "法规法库",
           children: [
             {
               name: "9-1",
               to: "/tax/law",
-              title: "法规查询"
-            },
-            {
-              name: "9-2",
-              to: "/tax/wenda",
-              title: "税后案例查询"
+              title: "税务"
             }
           ]
-        },
-        {
-          name: "6",
-          title: "财经资讯",
-          to: "/news"
         }
       ]
 };

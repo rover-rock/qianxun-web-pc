@@ -1,4 +1,4 @@
-import { get_audit_fees, get_audit_fees_total, get_wenda, get_wenda_total } from "@/apis/audit_data";
+import { get_audit_fees, get_audit_fees_total, get_wenda, get_wenda_total, get_data } from "@/apis/audit_data";
 export default {
     namespaced:true,
     state: {
@@ -8,11 +8,8 @@ export default {
         spinShow:false
     },
     mutations:{
-        set_audit_fees_records(state,data){
+        set_records(state,data){
             state.search_results = data
-        },
-        set_active_component(state,component){
-            state.active_component = component
         },
         set_total(state,total){
             state.total = total
@@ -32,10 +29,8 @@ export default {
             commit('set_keywords',keywords)
             get_audit_fees(keywords).then(res => {
                 let data = res.data
-                commit('set_audit_fees_records',data)
+                commit('set_records',data)
             })
-        },
-        get_audit_fees_total({commit}, keywords){
             get_audit_fees_total(keywords).then(res => {
                 commit('set_total',res.data[0].total)
             })
@@ -49,11 +44,24 @@ export default {
                     Vue.set(item, "checked", false);
                     return item;
                 });
-                commit('set_audit_fees_records',data)
+                commit('set_records',data)
+            })
+            get_wenda_total(keywords).then(res => {
+                commit('set_total',res.data[0].total)
             })
         },
-        get_wenda_total({commit}, keywords){
-            get_wenda_total(keywords).then(res => {
+        get_keyaudit({commit},keywords){
+            commit('set_keywords',keywords)
+            get_data('/audit-data/keyaudit',keywords).then(res => {   
+                let data = res.data
+                data.map(item => {
+                    Vue.set(item, "collapsed", true);
+                    Vue.set(item, "checked", false);
+                    return item;
+                });
+                commit('set_records',data)
+            })
+            get_data('/audit-data/keyaudit-total',keywords).then(res => {
                 commit('set_total',res.data[0].total)
             })
         }

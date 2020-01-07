@@ -6,16 +6,7 @@
       <Row>
         <Col span="12">
           <FormItem label="期间">
-            <DatePicker
-              format="yyyy-MM-dd"
-              type="daterange"
-              placement="top"
-              placeholder="选择期间"
-              style="width: 200px"
-              :transfer="true"
-              v-model="datespan"
-              :options="options"
-            ></DatePicker>
+            <CustomDatePicker v-model="datespan"></CustomDatePicker>
           </FormItem>
         </Col>
         <Col span="12">
@@ -49,21 +40,20 @@
 import { createNamespacedHelpers } from "vuex";
 import util from "@/libs/util";
 import config from "@/config/config";
-
+import CustomDatePicker from '@/views/components/custom-date-picker';
 const { mapActions, mapMutations } = createNamespacedHelpers("punish");
 
 export default {
   data() {
     return {
       keywords: {
-        start: "2015-07-19",
-        end: "",
+        start: "1990-01-01 00:00:00",
+        end: new Date().toLocaleDateString(),
         agency: "",
         title: "",
         content: ""
       },
       datespan: ["1990-01-01 00:00:00", new Date().toLocaleDateString()],
-      options: config.options
     };
   },
   watch: {
@@ -90,6 +80,9 @@ export default {
       this.get_total(keywords);
       this.$store.dispatch("add_to_search_history", this.keywords);
     }
+  },
+  components:{
+    CustomDatePicker
   }
 };
 </script>

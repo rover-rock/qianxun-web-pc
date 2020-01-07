@@ -44,7 +44,7 @@ export default {
             get_data('/IPO/kcb-total',keywords).then(res => {
                 commit('set_total',res.data[0].total)
             })
-        },
+        }
 
 
     }
