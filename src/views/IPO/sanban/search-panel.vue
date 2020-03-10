@@ -5,7 +5,7 @@
 </style>
 <template>
 <div class="search-panel">
-  <Form ref="form" :label-width="150" :model="keywords">
+  <Form ref="form" @keydown.enter.native="submit" :label-width="150" :model="keywords">
     <Row>
       <Col span="12">
         <FormItem label="关键词">

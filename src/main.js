@@ -4,7 +4,6 @@ import Routers from './router';
 import App from './app.vue';
 import { setToken, getToken } from '@/libs/util'
 
-// require('../mock/mock')
 Vue.use(iview);
 Vue.use(VueRouter)
 // 路由配置

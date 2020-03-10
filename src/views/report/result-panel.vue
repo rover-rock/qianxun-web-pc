@@ -22,7 +22,7 @@
   }
   .title {
     padding: 5px 10px;
-    max-width: 400px;
+    max-width: 40vw;
   }
   .title:hover {
     font-weight: bolder;
@@ -100,7 +100,7 @@
             <div v-html="item.secname + ':' + item.title" class="title text-ellipsis"></div>
           </div>
           <div class="part2">
-            <a :href="'/one-report/'+item.announcement_id" target="_blank">详情</a>
+            <a :href="'/one-report/'+item.announcement_id+'/'+$route.params.type" target="_blank">详情</a>
             <span class="date">{{item.time}}</span>
             <a class="link_btn" :href="item.link" target="_blank">源</a>
             <a class="download_btn" :href="item.download_link">

@@ -1,4 +1,4 @@
-import { post } from "axios";
+import { post,get } from "axios";
 import Config from "../config/config";
 
 export const login = (params) => {
@@ -17,3 +17,6 @@ export const get_verify_code = ( phone ) => {
     return post(Config.API_POINT + '/get_verify_code',{ phone })
 };
 
+export const get_users = ( ) => {
+    return get(Config.API_POINT + '/admin/get_users')
+};

@@ -5,6 +5,7 @@ import tax from './tax'
 import punish from './punish'
 import IPO from './IPO'
 import report from './report'
+import user from './user'
 
 import { login, get_user_info, register } from '@/apis/user'
 import { getToken, setToken } from '../libs/util';
@@ -81,7 +82,8 @@ const store = new Vuex.Store({
         punish,
         IPO,
         tax,
-        report
+        report,
+        user
     }
 })
 

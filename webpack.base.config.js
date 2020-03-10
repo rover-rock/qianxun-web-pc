@@ -5,11 +5,11 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 module.exports = {
     externals:{
         vue:'Vue',
-        iview:'iview',
+        iview:'view-design',
         vuex:'Vuex',
         echarts:'echarts'
     },
-    entry: {
+    entry: { 
         main: './src/main',
     },
     output: {

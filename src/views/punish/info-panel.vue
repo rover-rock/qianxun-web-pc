@@ -1,9 +1,5 @@
 <style scoped lang="less">
-.result-panel {
-  background: white;
-  margin: 20px;
-  padding: 20px;
-}
+
 .header {
   font-size: 1em;
   display: flex;
@@ -52,7 +48,13 @@
   font-size: 1.1em;
 }
 .detail-content {
-  font-size: 1.3em;
+  font-size: 1.1em;
+  p{
+    text-indent: 2em;
+  }
+}
+p{
+  text-indent: 2em;
 }
 .detail-title {
   text-align: center;

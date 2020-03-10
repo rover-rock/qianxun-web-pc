@@ -9,12 +9,6 @@ const routers = [
                 redirect: '/home'
             },
             {
-                path: 'home',
-                components: {
-                    'search-panel': () => import('./views/home')
-                }
-            },
-            {
                 path: 'report/:type',
                 name: 'Astock',
                 components: {
@@ -105,12 +99,39 @@ const routers = [
                 path: 'audit/fees',
                 components: {
                     'search-panel': () => import('./views/audit/fees/search-panel'),
-                    'info-panel': () => import('./views/audit/fees/result-panel'),
-                    'sider': () => import('./views/audit/case/sider')
+                    'info-panel': () => import('./views/audit/fees/result-panel')
                 }
             },
             {
-                path: 'audit/feibiao',
+                path: 'audit/equity',
+                components: {
+                    'search-panel': () => import('./views/audit/equity/search-panel'),
+                    'info-panel': () => import('./views/audit/equity/result-panel')
+                }
+            },
+            {
+                path: 'audit/repurchase',
+                components: {
+                    'search-panel': () => import('./views/audit/repurchase/search-panel'),
+                    'info-panel': () => import('./views/audit/repurchase/result-panel')
+                }
+            },
+            {
+                path: 'audit/forecast',
+                components: {
+                    'search-panel': () => import('./views/audit/forecast/search-panel'),
+                    'info-panel': () => import('./views/audit/forecast/result-panel')
+                }
+            },
+            {
+                path: 'audit/disclosure',
+                components: {
+                    'search-panel': () => import('./views/audit/disclosure/search-panel'),
+                    'info-panel': () => import('./views/audit/disclosure/result-panel')
+                }
+            },
+            {
+                path: 'audit/feibiao', 
                 components: {
                     'search-panel': () => import('./views/audit/feibiao/search-panel'),
                     'info-panel': () => import('./views/audit/feibiao/result-panel'),
@@ -138,6 +159,13 @@ const routers = [
                     'search-panel': () => import('./views/tax/law/search-panel'),
                     'info-panel': () => import('./views/tax/law/result-panel'),
                     'sider': () => import('./views/audit/case/sider')
+                }
+            },
+            {
+                path: 'tax/zhunze',
+                components: {
+                    'search-panel': () => import('./views/tax/zhunze/search-panel'),
+                    'info-panel': () => import('./views/tax/zhunze/result-panel')
                 }
             },
             {
@@ -180,11 +208,15 @@ const routers = [
             {
                 path: 'package',
                 components: {
-                    'search-panel': () => import('./views/tools/package'),
-                    'sider': () => import('./views/tools/sider')
+                    'search-panel': () => import('./views/tools/package')
                 }
             },
-
+            {
+                path: 'hanzheng',
+                components: {
+                    'search-panel': () => import('./views/tools/hanzheng')
+                }
+            }
         ]
     },
     {
@@ -206,9 +238,17 @@ const routers = [
         ]
     },
     {
-        path: '/one-report/:id',
+        path: '/one-report/:id/:type',
         component: () => import('./views/report/one-report.vue')
-    }
+    },
+    {
+        path: '/one-zhunze',
+        component: () => import('./views/tax/zhunze/one-zhunze.vue')
+    },
+    {
+        path: '/home',
+        component: () => import('./views/home.vue')
+    },
 ];
 
 export default routers;

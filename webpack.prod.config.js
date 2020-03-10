@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const merge = require('webpack-merge');
@@ -22,6 +23,7 @@ module.exports = merge(webpackBaseConfig, {
         chunkFilename: '[name].[hash].'+Version+'.chunk.js'
     },
     plugins: [
+        new CleanWebpackPlugin(),
         new ExtractTextPlugin({
             filename: '[name].[hash].css',
             allChunks: true

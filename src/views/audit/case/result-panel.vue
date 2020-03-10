@@ -1,9 +1,4 @@
 <style scoped lang="less">
-.result-panel {
-  background: white;
-  margin: 20px;
-  padding: 20px;
-}
 .header {
   font-size: 1em;
   display: flex;
@@ -52,7 +47,7 @@
   font-size: 1.1em;
 }
 .detail-content {
-  font-size: 1.3em;
+  font-size: 1.1em;
 }
 .detail-title {
   margin-bottom: 25px;
@@ -217,6 +212,7 @@ export default {
           item.question_text
         );
       });
+      
         this.modalShow = true;
       });
     },
@@ -225,7 +221,7 @@ export default {
       this.search_result.forEach(item => {
         item.checked = this.check_all;
       });
-    },
+    }, 
     unfoldAll() {
       this.fold_all = !this.fold_all;
       this.search_result.forEach(item => {

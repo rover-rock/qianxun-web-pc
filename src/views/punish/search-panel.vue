@@ -1,8 +1,8 @@
 <style lang='less' scoped>
-</style>
+</style> 
 <template>
-  <Card class="search-panel">
-    <Form ref="form" :label-width="80" :model="keywords">
+  <div class="search-panel">
+    <Form ref="form"  @keydown.enter.native="handleSubmit" :label-width="80" :model="keywords">
       <Row>
         <Col span="12">
           <FormItem label="期间">
@@ -34,33 +34,25 @@
         <Button type="primary" @click="handleSubmit('form')">检索</Button>
       </FormItem>
     </Form>
-  </Card>
+  </div>
 </template>
 <script>
 import { createNamespacedHelpers } from "vuex";
-import util from "@/libs/util";
+import {time_mixin} from "@/mixins";
 import config from "@/config/config";
 import CustomDatePicker from '@/views/components/custom-date-picker';
 const { mapActions, mapMutations } = createNamespacedHelpers("punish");
 
 export default {
+  mixins:[time_mixin],
   data() {
     return {
       keywords: {
-        start: "1990-01-01 00:00:00",
-        end: new Date().toLocaleDateString(),
         agency: "",
         title: "",
         content: ""
-      },
-      datespan: ["1990-01-01 00:00:00", new Date().toLocaleDateString()],
+      }
     };
-  },
-  watch: {
-    datespan(value) {
-      this.keywords.start = this.datespan[0];
-      this.keywords.end = this.datespan[1];
-    }
   },
   mounted() {
     this.handleSubmit()
@@ -71,10 +63,6 @@ export default {
     ...mapMutations(["set_spin"]),
     handleSubmit() {
       let keywords = { ...this.keywords, current_page: 1, page_size: 10 };
-
-      this.keywords.start = util.format(this.keywords.start);
-      this.keywords.end = util.format(this.keywords.end);
-
       this.set_spin(true);
       this.search(keywords).then(() => this.set_spin(false));
       this.get_total(keywords);

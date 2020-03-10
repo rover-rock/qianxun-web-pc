@@ -1,9 +1,5 @@
 <style scoped>
-.info-panel {
-  background: white;
-  margin: 20px;
-  padding: 20px;
-}
+
 .modal-table{
   border-collapse: collapse;
   width: 100%;
@@ -14,7 +10,7 @@
 }
 </style>
 <template>
-  <div class="info-panel">
+  <div class="result-panel">
       <Table :columns="columns" :data="data_lines" size="small" ref="table" stripe></Table>
       <div style="margin: 10px;overflow: hidden">
         <div style="float: right;">
@@ -30,13 +26,6 @@
           ></Page>
         </div>
       </div>
-      <br />
-      <Button type="primary" size="large" @click="exportData(1)">
-        <Icon type="ios-download-outline"></Icon>导出原始数据
-      </Button>
-      <Button type="primary" size="large" @click="exportData(2)">
-        <Icon type="ios-download-outline"></Icon>导出排序后的数据
-      </Button>
       <Modal
         v-model="modalShow"
         title="符合条件的签字注师"
@@ -86,13 +75,13 @@ export default {
         {
           title: "开始时间",
           key: "ann_date",
-          width: 200,
+          width: 130,
           sortable: true
         },
         {
           title: "结束时间",
           key: "end_date",
-          width: 200,
+          width: 130,
           sortable: true
         },
         {
@@ -104,13 +93,13 @@ export default {
         {
           title: "审计意见",
           key: "audit_result",
-          width: 200,
+          width: 150,
           sortable: true
         },
         {
           title: "审计费用",
           key: "audit_fees",
-          width: 200,
+          width: 150,
           sortable: true
         },
         {
@@ -119,9 +108,11 @@ export default {
           width: 200,
           render: (h, params) => {
                       let cpas = params.row.audit_sign && params.row.audit_sign.split(',')
-                       cpas = cpas && cpas.map(cpa => {
-                          return h('a',{ props:{ href:'#'}, on: { click:()=>{ this.cpa=cpa;this.showModal(); }}}, cpa)
-                      })
+                       cpas = cpas && cpas.reduce((acc,cpa,index) => {
+                         acc.push(h('a',{ props:{ href:'#'}, on: { click:()=>{ this.cpa=cpa;this.showModal(); }}}, cpa))
+                          if(index !== (cpas.length-1)) acc.push(h('span',null,'，'))
+                          return acc
+                      },[])
                       return h('div', cpas);
                   }
         }
@@ -145,24 +136,6 @@ export default {
   beforeDestroy() {},
   methods: {
     ...mapActions(['get_audit_fees_records']),
-    exportData(type) {
-      if (type === 1) {
-        this.$refs.table.exportCsv({
-          filename: "The original data"
-        });
-      } else if (type === 2) {
-        this.$refs.table.exportCsv({
-          filename: "Sorting and filtering data",
-          original: false
-        });
-      } else if (type === 3) {
-        this.$refs.table.exportCsv({
-          filename: "Custom data",
-          columns: this.columns8.filter((col, index) => index < 4),
-          data: this.data7.filter((data, index) => index < 4)
-        });
-      }
-    },
     changePage(page_num) {
       this.current_page = page_num;
       this.search_with_params();

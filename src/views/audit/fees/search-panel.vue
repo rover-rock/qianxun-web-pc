@@ -4,8 +4,8 @@
 }
 </style>
 <template>
-<Card class="search-panel">
-  <Form ref="form" :label-width="150" :model="keywords">
+<div class="search-panel">
+  <Form ref="form" @keydown.enter.native="submit" :label-width="150" :model="keywords">
     <Row>
       <Col span="12">
         <FormItem label="期间">
@@ -14,7 +14,6 @@
           ></CustomDatePicker>
         </FormItem>
       </Col>
-      
       <Col span="12">
         <FormItem label="签字注师">
           <Input clearable type="text" placeholder="匹配关键字" v-model="keywords.cpa"></Input>
@@ -52,23 +51,21 @@
       <Button type="primary" @click="submit()">检索</Button>
     </FormItem>
   </Form>
-  </Card>
+  </div>
 </template>
 <script>
 import { createNamespacedHelpers } from "vuex";
-import util from "@/libs/util";
-import config from "@/config/config";
+import { time_mixin } from "@/mixins"
 import CompanyAutoComplete from '@/views/components/company-auto-complete';
 import AgencyAutoComplete from '@/views/components/agency-auto-complete';
 import CustomDatePicker from '@/views/components/custom-date-picker';
 const { mapActions } = createNamespacedHelpers('audit')
 
 export default {
+  mixins:[time_mixin],
   data() {
     return {
       keywords: {
-        start: new Date("2000-01-01").toLocaleDateString(),
-        end: new Date().toLocaleDateString(),
         company: "",
         audit_result: [],
         agency: "",
@@ -79,16 +76,8 @@ export default {
         "带强调事项段的无保留意见",
         "保留意见",
         "无法表示意见"
-      ],
-      datespan: ["2000-01-01 00:00:00", new Date().toLocaleDateString()],
-      options: config.options
+      ]
     };
-  },
-  watch: {
-    datespan(value) {
-      this.keywords.start = this.datespan[0];
-      this.keywords.end = this.datespan[1];
-    }
   },
   mounted() {
     this.submit()
@@ -96,13 +85,11 @@ export default {
   methods: {
     ...mapActions(["get_audit_fees_records"]),
     submit() {   
-      let start = util.format(this.keywords.start),
-          end = util.format(this.keywords.end),
-          company = /\[(.+)\]/g.exec(this.keywords.company) ,
+      let company = /\[(.+)\]/g.exec(this.keywords.company) ,
           agency = (this.keywords.agency && this.keywords.agency.split(' ')[1]) || '';
       company = company ? company[1] : '';
       if( agency && agency !== '' ) agency = agency.split('（')[0];
-      let keywords = { ...this.keywords ,start, end, company, agency, current_page: 1, page_size: 10  }
+      let keywords = { ...this.keywords , company, agency, current_page: 1, page_size: 10  }
       this.get_audit_fees_records( keywords );
     }
   },

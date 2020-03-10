@@ -192,9 +192,9 @@ export default {
     };
   },
   mounted() {
-    let src = `https://reports-1258622425.cos.ap-guangzhou.myqcloud.com/${this.$route.params.id}.html`
+    let src = `https://reports-1258622425.file.myqcloud.com/${this.$route.params.id}.html`
     this.spinShow = true
-    this.get_report(this.$route.params.id);
+    this.get_report(this.$route.params.id,this.$route.params.type);
     get(src).then(data => {
       this.src_html = data.data
       let that = this
@@ -219,8 +219,8 @@ export default {
   },
   beforeDestroy() {},
   methods: {
-    get_report(id) {
-      get_one_report({ id }).then(res => {
+    get_report(id,type) {
+      get_one_report({ id,type }).then(res => {
         res.data.catalog.forEach(element => {
           element.folded = true
         });

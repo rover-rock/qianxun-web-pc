@@ -5,7 +5,7 @@
 </style>
 <template>
 <div class="search-panel">
-  <Form ref="form" :label-width="150" :model="keywords">
+  <Form ref="form" @keydown.enter.native="submit" :label-width="150" :model="keywords">
     <Row>
       <Col span="12">
         <FormItem label="关键词">
@@ -35,14 +35,9 @@
       </Col>
       <Col span="12">
       <FormItem label="会计师事务所">
-          <AutoComplete
-          transfer
-          clearable
+          <AgencyAutoComplete
         v-model="keywords.agency"
-        :data="matched_agency"
-        @on-search="handleSearchAgency"
-        placeholder="匹配关键字"
-        style="width:300px"></AutoComplete>
+       ></AgencyAutoComplete>
         </FormItem>
       </Col>
     </Row>
@@ -57,7 +52,7 @@ import { createNamespacedHelpers } from "vuex";
 import util from "@/libs/util";
 import config from "@/config/config";
 import { search_agency } from "@/apis/auto_complete"
-
+import AgencyAutoComplete from '@/views/components/agency-auto-complete';
 const { mapActions } = createNamespacedHelpers('IPO')
 export default {
   data() {
@@ -68,8 +63,7 @@ export default {
         keyword:''
       },
       datespan: ["2000-01-01 00:00:00", new Date().toLocaleDateString()],
-      options: config.options,
-      matched_agency: []
+      options: config.options
     };
   },
   watch: {
@@ -84,7 +78,6 @@ export default {
   methods: {
     ...mapActions(["get_kcb"]),
     submit() {   
-      console.log(111)      
       let keywords = this.compose_keywords()
       this.get_kcb( keywords )
     },
@@ -92,14 +85,10 @@ export default {
       let start = util.format(this.keywords.start),
           end = util.format(this.keywords.end)
       return { ...this.keywords , keyword:this.keyword, start, end, current_page: 1, page_size: 10  }
-    },
-    handleSearchAgency(value){
-      search_agency(value).then(res => {
-        this.matched_agency = res.data.map( item => {
-          return `[${item.agency_code}] ${item.agency_name}`
-        })
-      })
     }
+  },
+  components:{
+    AgencyAutoComplete
   }
 };
 </script>

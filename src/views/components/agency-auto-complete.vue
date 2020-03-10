@@ -25,7 +25,7 @@ export default {
     handleSearchAgency(value){
       search_agency(value).then(res => {
         this.matched_agency = res.data.map( item => {
-          return `[${item.agency_code}] ${item.agency_name}`
+          return `${item.agency}`
         })
       })
     }

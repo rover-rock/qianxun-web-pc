@@ -177,38 +177,23 @@ let config = {
               title: "行政处罚"
             },
             {
-              name: "7-8",
-              to: "/audit/case",
-              title: "研发资本化"
-            },
-            {
               name: "7-4",
-              to: "/audit/case",
+              to: "/audit/equity",
               title: "股权质押"
             },
             {
               name: "7-10",
-              to: "/audit/case",
+              to: "/audit/repurchase",
               title: "股份回购"
             },
             {
-              name: "7-11",
-              to: "/audit/case",
-              title: "限制性股票"
-            },
-            {
               name: "7-12",
-              to: "/audit/case",
+              to: "/audit/forecast",
               title: "业绩预告"
             },
             {
-              name: "7-13",
-              to: "/audit/case",
-              title: "业绩快报"
-            },
-            {
               name: "7-14",
-              to: "/audit/case",
+              to: "/audit/disclosure",
               title: "财务报表披露日期"
             }
           ]
@@ -242,6 +227,11 @@ let config = {
               name: "9-1",
               to: "/tax/law",
               title: "税务"
+            },
+            {
+              name: "9-2",
+              to: "/tax/zhunze",
+              title: "财务与会计"
             }
           ]
         }

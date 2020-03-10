@@ -2,7 +2,7 @@
 </style>
 <template>
   <div class="search-panel">
-    <Form ref="form" :label-width="80" :model="keywords">
+    <Form ref="form" @keydown.enter.native="handleSubmit" :label-width="80" :model="keywords">
       <Row>
         <Col span="12">
           <FormItem label="公司">
@@ -11,9 +11,11 @@
         </Col>
         <Col span="12">
           <FormItem  label="期间">
-            <Tooltip content="多个关键字以空格隔开" placement="top" :transfer="true">
-              <Input style="width:120%"  type="text" placeholder="匹配关键字" v-model="keywords.annul"></Input>
-            </Tooltip>
+            
+               <Select v-model="keywords.annul" multiple :transfer="true" style="width:300px;">
+            <Option v-for="(item,index) in annuls" :value="item" :key="index">{{ item }}</Option>
+          </Select>
+            
           </FormItem>
         </Col>
       </Row>
@@ -25,7 +27,7 @@
       </Col>
       <Col span="12">
         <FormItem label="行业">
-          <Input style="width:200px" clearable type="text" placeholder="匹配关键字" v-model="keywords.thsindusty"></Input>
+          <IndustryAutoComplete v-model="keywords.industry"></IndustryAutoComplete>
         </FormItem>
       </Col>
     </Row>
@@ -61,6 +63,7 @@ import util from "@/libs/util";
 import config from "@/config/config";
 import CompanyAutoComplete from '@/views/components/company-auto-complete';
 import AgencyAutoComplete from '@/views/components/agency-auto-complete';
+import IndustryAutoComplete from '@/views/components/industry-auto-complete';
 const { mapActions, mapMutations } = createNamespacedHelpers("audit");
 export default {
   data() {
@@ -71,9 +74,14 @@ export default {
         reply:"",
         company_code:"",
         agency:"",
-        thsindustry:''
+        industry:'',
+        annul:''
       },
-      datespan: ["1990-01-01", new Date().toLocaleDateString()],
+      annuls:[
+        '2017年度',
+        '2018年度',
+        '2019年度'
+      ]
     };
   },
   mounted() {
@@ -84,16 +92,17 @@ export default {
     ...mapActions(["get_keyaudit"]),
     ...mapMutations(["set_spin"]),
     handleSubmit() {
-      let company_code = this.keywords.company_code
-      this.keywords.company_code = company_code.match(/\[(.*)\]/) && company_code.match(/\[(.*)\]/)[1]
-      let keywords = { ...this.keywords , current_page: 1, page_size: 10 };
+      let company_code = this.keywords.company_code || ''
+      company_code = company_code.match(/\[(.*)\]/) && company_code.match(/\[(.*)\]/)[1]
+      let keywords = { ...this.keywords ,company_code, current_page: 1, page_size: 10 };
       this.set_spin(true);
       this.get_keyaudit(keywords).then(() => this.set_spin(false));
     }
   },
   components:{
     AgencyAutoComplete,
-    CompanyAutoComplete
+    CompanyAutoComplete,
+    IndustryAutoComplete
   }
 };
 </script>

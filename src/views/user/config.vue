@@ -38,9 +38,9 @@
     <Card dis-hover  :shadow='true' style="width:1000px;">
       <p slot="title">账户信息</p>
       <div class="item">
-          <h3 style="padding-left: 10px;">欢迎！18639153808</h3>
-          <p  style="display: inline">您的会员期限截止到2019-09-17，感谢您的使用和支持！</p>
-          <p><span class="title">单位：</span><span class="value">瑞华会计事务所</span></p>
+          <h3 style="padding-left: 10px;">欢迎！{{user.phone}}</h3>
+          <p  style="display: inline">感谢您的使用和支持！</p>
+          <p><span class="title">单位：</span><span class="value"></span></p>
           <p><span class="title">部门：</span><span class="value"></span></p>
           <p><span class="title">职位：</span><span class="value"></span></p>
       </div>
@@ -48,12 +48,22 @@
   </div>
 </template>
 <script>
+import { get_user_info } from '@/apis/user'
+import { getToken } from '@/libs/util'
+
 export default {
   data() {
-    return {};
+    return {
+      user:{}
+    };
   },
   components: {},
-  mounted() {},
+  mounted() {
+    const token = getToken()
+    get_user_info(token).then(res => {
+      this.user = res.data.data
+    })
+  },
   beforeDestroy() {},
   methods: {}
 };

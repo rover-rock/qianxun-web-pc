@@ -1,5 +1,5 @@
 <style scoped lang="less">
-.container {
+.tool-container {
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
@@ -13,7 +13,7 @@
 }
 </style>
 <template>
-  <div class="container">
+  <div class="tool-container">
     <tool-block v-for="(item, index) in tools" :key="index" class="tool" :name="item.name" :to="item.to" :type="item.type" like_num="800"></tool-block>
   </div>
 </template>
@@ -27,6 +27,11 @@ export default {
             {
                 name:'快递查询',
                 to:'/audit/tools/package',
+                type:"ios-archive"
+            },
+            {
+                name:'往来函证地址验证',
+                to:'/audit/tools/hanzheng',
                 type:"ios-archive"
             },
             {
@@ -49,11 +54,7 @@ export default {
                 to:'/audit/tools/package',
                 type:"ios-archive"
             },
-            {
-                name:'往来函证地址验证',
-                to:'/audit/tools/package',
-                type:"ios-archive"
-            },
+            
             {
                 name:'报告复核采集器',
                 to:'/audit/tools/package',

@@ -59,7 +59,6 @@
   </Card>
 </template>
 <script>
-import { search_company } from "@/apis/auto_complete";
 
 export default {
   name: "CollapseListItem",

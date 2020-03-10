@@ -47,7 +47,7 @@
   font-size: 1.1em;
 }
 .detail-content {
-  font-size: 1.3em;
+  font-size: 1.1em;
 }
 .detail-title {
   text-align: center;
@@ -85,7 +85,7 @@
         <div class="list-item">
           <div class="part1" @click="unfold(item)">
             <Checkbox size="large" v-model="item.checked"></Checkbox>
-            <Tag color="volcano">{{item.agency}}</Tag>
+            <Tag color="volcano">{{item.banner}}</Tag>
             <div v-html="item.title" class="title text-ellipsis"></div>
           </div>
           <div>
@@ -99,8 +99,8 @@
           </div>
         </div>
         <div class="collapse-panel" :class="{'collapsed':item.collapsed}">
-          <Tag color="magenta">{{item.category}}</Tag>:
-          <span @click="unfold(item)" v-html="item.html"></span>
+          <Tag color="magenta">{{item.banner}}</Tag>:
+          <span @click="unfold(item)" v-html="item.content"></span>
         </div>
       </Card>
       <Spin size="large" fix v-if="spinShow"></Spin>
@@ -116,7 +116,7 @@
           <div>
             <Row>
               <Col span="12">
-              <Tag color="success">税&emsp;种</Tag>{{result.category}}
+              <Tag color="success">税&emsp;&emsp;&emsp;种</Tag>{{result.banner}}
               </Col>
               <Col span="12">
               <Tag color="success">文&emsp;&emsp;号</Tag>{{result.doc}}
@@ -124,7 +124,7 @@
             </Row>
             <Row>
               <Col span="12">
-              <Tag color="success">banner</Tag>{{result.banner}}
+              <Tag color="success">条文有效性</Tag>{{result.is_youxiao}}
               </Col>
               <Col span="12">
               <Tag color="success">发文机关</Tag>{{result.agency}}
@@ -136,7 +136,7 @@
            <p class="detail-subtitle">
              时间：{{result.date}}
            </p>
-           <p class="detail-content" v-html="result.html"></p>
+           <p class="detail-content" v-html="result.content"></p>
         </div>      
         </div>
         
@@ -189,9 +189,9 @@ export default {
           keywords.title,
           item.title
         );
-        item.html = util.render_multi_keywords_red(
+        item.content = util.render_multi_keywords_red(
           keywords.content,
-          item.html
+          item.content
         );
       });
       return data;

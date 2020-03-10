@@ -1,9 +1,4 @@
 <style scoped lang="less">
-.result-panel {
-  background: white;
-  margin: 20px;
-  padding: 20px;
-}
 .header {
   font-size: 1em;
   display: flex;
@@ -47,11 +42,14 @@
   padding: 0px 30px;
   overflow: hidden;
 }
+.detail-container{
+  margin-top: 30px;
+}
 .detail-item{
   font-size: 1.1em;
 }
 .detail-content {
-  font-size: 1.3em;
+  font-size: 1.1em;
 }
 .detail-title {
   text-align: center;
@@ -89,7 +87,7 @@
         <div class="list-item">
           <div class="part1" @click="unfold(item)">
             <Checkbox size="large" v-model="item.checked"></Checkbox>
-            <Tag color="volcano">{{item.category}}</Tag>
+            <Tag color="volcano">{{item.banner}}</Tag>
             <div v-html="item.question" class="title text-ellipsis"></div>
           </div>
           <div>
@@ -97,8 +95,8 @@
               <Button shape="circle" @click=" showOne(item) ">查看详情</Button>
             </Tooltip>
             <span class="date">{{item.reply_time}}</span>
-            <a :href="item.link" target="_blank">源</a>
-            <span>阅读量</span>
+            <a :href="item.link" target="_blank">{{item.banner === '12366'?' ':'源'}}</a>
+            
             <Button>收藏</Button>
           </div>
         </div>
@@ -121,8 +119,24 @@
           
         </div>
         <div>
-          <h3 class="detail-title"></h3>
-        <Timeline>
+          <div>
+            <Row>
+              <Col span="12">
+                <Tag color="success">来&emsp;&emsp;&emsp;源</Tag>{{ result.banner }}
+              </Col>
+              <Col span="12">
+                <Tag color="success">税&emsp;&emsp;&emsp;种</Tag
+                >{{ result.banner === '12366' ? result.category : result.banner }}
+              </Col>
+            </Row>
+            <Row>
+              <Col span="12">
+                <Tag color="success">条文有效性</Tag>{{ result.is_effictive }}
+              </Col>
+            </Row>
+          </div>
+          <div class="detail-container">
+            <Timeline>
           <TimelineItem class="detail-item" color="green">
             <p class="detail-time">{{result.reply_time}}</p>
             <div>
@@ -136,6 +150,8 @@
             <Divider></Divider>
           </TimelineItem>
         </Timeline>
+          </div>
+        
         </div>
         
       </Modal>

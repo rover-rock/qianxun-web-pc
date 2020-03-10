@@ -3,7 +3,7 @@
 </style>
 <template>
   <Card class="search-panel">
-    <Form ref="form" :label-width="80" :model="keywords">
+    <Form ref="form" @keydown.enter.native="handleSubmit" :label-width="80" :model="keywords">
       <Row> 
         <Col span="12">
           <FormItem prop="question" label="问题">
@@ -50,11 +50,11 @@ export default {
     return {
       keywords: {
         start: "1990-01-01 00:00:00",
-        end: new Date().toLocaleDateString(),
+        end: new Date().toLocaleDateString("zh-Hans-CN"),
         question: "",
         comment: ""
       },
-      datespan: ["1990-01-01 00:00:00", new Date().toLocaleDateString()],
+      datespan: ["1990-01-01 00:00:00", new Date().toLocaleDateString("zh-Hans-CN")],
       options: config.options
     };
   },

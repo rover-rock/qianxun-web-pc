@@ -1,20 +1,14 @@
 <style lang='less' scoped>
 </style>
 <template>
-  <Card class="search-panel">
-    <Form ref="form" :label-width="80" :model="keywords">
+  <div class="search-panel">
+    <Form ref="form" @keydown.enter.native="handleSubmit" :label-width="80" :model="keywords">
       <Row>
         <Col span="12">
           <FormItem label="公司">
-            <AutoComplete
-              transfer
-              clearable
+            <CompanyAutoComplete
               v-model="keywords.company"
-              :data="matched_company"
-              @on-search="handleSearchCompany"
-              placeholder="匹配关键字"
-              style="width:300px"
-            ></AutoComplete>
+            ></CompanyAutoComplete>
           </FormItem>
         </Col>
         <Col span="12">
@@ -53,14 +47,13 @@
         <Button type="primary" @click="handleSubmit('form')">检索</Button>
       </FormItem>
     </Form>
-  </Card>
+  </div>
 </template>
 <script>
 import { createNamespacedHelpers } from "vuex";
 import util from "@/libs/util";
 import config from "@/config/config";
-import { search_company } from "@/apis/auto_complete"
-
+import CompanyAutoComplete from '@/views/components/company-auto-complete';
 const { mapActions, mapMutations } = createNamespacedHelpers("audit");
 export default {
   data() {
@@ -73,8 +66,7 @@ export default {
         company: ""
       },
       datespan: ["1990-01-01 00:00:00", new Date().toLocaleDateString()],
-      options: config.options,
-      matched_company: [],
+      options: config.options
     };
   },
 
@@ -95,20 +87,17 @@ export default {
       
       //匹配数据库中时间格式
       let start = util.format(this.keywords.start) + " 00:00:00",
-          end = util.format(this.keywords.end) + " 24:59:59",
+      //es中使用的时间格式要对
+          end = util.format(this.keywords.end) + " 23:59:59",
           company = (this.keywords.company && this.keywords.company.split(' ')[1]) || '';
       let keywords = { ...this.keywords, current_page: 1, page_size: 10, sort:'latest',start,end,company };
       this.set_spin(true);
       this.get_wenda_records(keywords).then(() => this.set_spin(false));
       this.$store.dispatch("add_to_search_history", this.keywords);
-    },
-    handleSearchCompany(value){
-      search_company(value).then(res => {
-        this.matched_company = res.data.map( item =>{
-          return `[${item.ts_code}] ${item.name}`
-        })
-      })
-    },
+    }
+  },
+  components:{
+    CompanyAutoComplete
   }
 };
 </script>

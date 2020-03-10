@@ -39,15 +39,13 @@ export default {
             commit('set_keywords',keywords)
             await get_wenda(keywords).then(res => {
                 let data = res.data
-                data.map(item => {
+                data.data.map(item => {
                     Vue.set(item, "collapsed", true);
                     Vue.set(item, "checked", false);
                     return item;
                 });
-                commit('set_records',data)
-            })
-            get_wenda_total(keywords).then(res => {
-                commit('set_total',res.data[0].total)
+                commit('set_records',data.data)
+                commit('set_total',data.total)
             })
         },
         get_keyaudit({commit},keywords){
@@ -64,6 +62,81 @@ export default {
             get_data('/audit-data/keyaudit-total',keywords).then(res => {
                 commit('set_total',res.data[0].total)
             })
-        }
+        },
+        get_feibiao({commit},keywords){
+            commit('set_keywords',keywords)
+            get_data('/audit-data/feibiao',keywords).then(res => {   
+                let data = res.data
+                data.map(item => {
+                    Vue.set(item, "collapsed", true);
+                    Vue.set(item, "checked", false);
+                    return item;
+                });
+                commit('set_records',data)
+            })
+            get_data('/audit-data/feibiao-total',keywords).then(res => {
+                commit('set_total',res.data[0].total)
+            })
+        },
+        get_equity({commit},keywords){
+            commit('set_keywords',keywords)
+            get_data('/audit-data/equity',keywords).then(res => {   
+                let data = res.data
+                data.map(item => {
+                    Vue.set(item, "collapsed", true);
+                    Vue.set(item, "checked", false);
+                    return item;
+                });
+                commit('set_records',data)
+            })
+            get_data('/audit-data/equity-total',keywords).then(res => {
+                commit('set_total',res.data[0].total)
+            })
+        },
+        get_repurchase({commit},keywords){
+            commit('set_keywords',keywords)
+            get_data('/audit-data/repurchase',keywords).then(res => {   
+                let data = res.data
+                data.map(item => {
+                    Vue.set(item, "collapsed", true);
+                    Vue.set(item, "checked", false);
+                    return item;
+                });
+                commit('set_records',data)
+            })
+            get_data('/audit-data/repurchase-total',keywords).then(res => {
+                commit('set_total',res.data[0].total)
+            })
+        },
+        get_forecast({commit},keywords){
+            commit('set_keywords',keywords)
+            get_data('/audit-data/forecast',keywords).then(res => {   
+                let data = res.data
+                data.map(item => {
+                    Vue.set(item, "collapsed", true);
+                    Vue.set(item, "checked", false);
+                    return item;
+                });
+                commit('set_records',data)
+            })
+            get_data('/audit-data/forecast-total',keywords).then(res => {
+                commit('set_total',res.data[0].total)
+            })
+        },
+        get_disclosure({commit},keywords){
+            commit('set_keywords',keywords)
+            get_data('/audit-data/disclosure',keywords).then(res => {   
+                let data = res.data
+                data.map(item => {
+                    Vue.set(item, "collapsed", true);
+                    Vue.set(item, "checked", false);
+                    return item;
+                });
+                commit('set_records',data)
+            })
+            get_data('/audit-data/disclosure-total',keywords).then(res => {
+                commit('set_total',res.data[0].total)
+            })
+        },
     }
 }

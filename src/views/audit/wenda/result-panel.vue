@@ -1,9 +1,4 @@
 <style scoped lang="less">
-.result-panel {
-  background: white;
-  margin: 20px;
-  padding: 20px;
-}
 .header {
   font-size: 1em;
   display: flex;
@@ -87,8 +82,7 @@
             <div v-html="item.stockbar_name +'：'+ item.ask_question" class="title text-ellipsis"></div>
           </div>
           <div>
-            <span class="date">{{item.post_publish_time}}</span>
-            <a href="#" target="_blank">源</a>
+            <span class="date">{{item.post_display_time}}</span>
             <span>阅读量{{item.post_click_count}}</span>
           </div>
         </div>

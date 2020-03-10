@@ -1,7 +1,6 @@
 <style scoped lang="less">
-.container {
+.tool-container {
   width: 1000px;
-  height: 100px;
   padding: 20px;
 }
 .method {
@@ -61,7 +60,7 @@
       <div class="back-button"><Icon type="md-arrow-back" size="20" />返回</div>
     </span>
 
-    <div class="container">
+    <div class="tool-container">
       <div class="method">
         方式一
         <Input

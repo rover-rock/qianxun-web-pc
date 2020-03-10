@@ -2,7 +2,7 @@
 </style>
 <template>
   <div class="search-panel">
-    <Form ref="form" :label-width="80" :model="keywords">
+    <Form ref="form" @keydown.enter.native="handleSubmit" :label-width="80" :model="keywords">
       <Row>
         <Col span="12">
           <FormItem label="标题">
@@ -34,7 +34,7 @@
       <Row>
         <Col span="12">
           <FormItem label="税种">
-              <Input style="width:200px" type="text" placeholder="匹配关键字" v-model="keywords.category"></Input>
+              <Input style="width:200px" type="text" placeholder="匹配关键字" v-model="keywords.banner"></Input>
           </FormItem>
         </Col>
         <Col span="12">
@@ -76,7 +76,8 @@ export default {
         content: "",
         agency:"",
         doc:"",
-        category:""
+        banner:"",
+        sort:"latest"
       },
       datespan: ["1990-01-01", new Date().toLocaleDateString()],
       options: config.options
@@ -94,7 +95,7 @@ export default {
   },
   beforeDestroy() {},
   methods: {
-    ...mapActions(["get_laws", "get_laws_total"]),
+    ...mapActions(["get_laws"]),
     ...mapMutations(["set_spin"]),
     handleSubmit() {
       let keywords = { ...this.keywords, current_page: 1, page_size: 10 };
@@ -104,7 +105,6 @@ export default {
 
       this.set_spin(true);
       this.get_laws(keywords).then(() => this.set_spin(false));
-      this.get_laws_total(keywords);
     }
   }
 };
